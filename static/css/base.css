@@ -18,12 +18,14 @@ body {
     scrollbar-width: 10px;
 }
 
+/* Navbar Styling */
 .navbar {
     background-color: var(--background-color-dark); 
     background-size: cover;
 }
 
 .navbar-brand {
+    font-family: "Comfortaa",monospace;
     color: var(--accent-color-2);
     font-size: 2.3rem;
     margin-left: 2rem;
@@ -39,6 +41,7 @@ body {
 }
 
 .nav-link {
+    font-family: "Comfortaa",monospace;
     color: var(--text-color);
     font-size: 1.3rem;
     font-weight: bold;
@@ -57,7 +60,7 @@ body {
 }
 
 .spacer-element {
-    margin-top: 500rem;
+    margin-top: 15rem;
 }
 
 .test-header {
@@ -65,7 +68,7 @@ body {
 }
 
 
-/* Scrollbar for WebKit browsers (Chrome, Safari, Edge) */
+/* Scrollbar Styling for WebKit browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
     width: 12px;
 }
@@ -79,3 +82,112 @@ body {
     border-radius: 10px;
     border: 1px solid var(--background-color-dark);
 }
+
+/* Authentication Form Styling */
+
+.auth-heading {
+    text-align: center;
+    font-size: 3.5rem;
+    font-family: "Comfortaa",monospace;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+}
+
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-family: "Comfortaa";
+    border: var(--accent-color-1) solid 3px;
+    background-color: var(--background-color-dark);
+    border-radius: 50px;
+    padding: 20px;
+    margin-bottom: 150px;
+    text-align: center;
+}
+
+.auth-logout-container {
+    margin-top: 25px;
+    font-size: 1.5rem;
+    font-family: "Comfortaa",monospace;
+    color: grey;
+    border: rgb(255, 255, 255) solid 3px;
+    background-color: var(--background-color-dark);
+    border-radius: 50px;
+    padding: 20px;
+    margin-bottom: 250px;
+  }
+
+.auth-text {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 2rem;
+    color: red;
+}
+.auth-form {
+    padding-top: 50px;
+    text-align: left;
+    color: red;
+}
+
+.auth-form-group {
+    font-family: "Comfortaa",monospace;
+    color: var(--text-color);
+    margin-top: 1rem;
+}
+
+.auth-button-container {
+    text-align: center;
+    margin-top: 45px;
+    margin-bottom: 25px;
+}
+
+.auth-logout-button-container {
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 25px;
+}
+
+.primary-button {
+  appearance: none;
+  background-color: #FCFCFD;
+  border-radius: 4px;
+  border-width: 0;
+  box-shadow: rgba(201, 192, 219, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: black;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "Comfortaa",monospace;
+  height: 48px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow .15s,transform .15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow,transform;
+  font-size: 2rem;
+  align-items: center;
+}
+
+.primary-button:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.primary-button:active {
+  box-shadow: #D6D6E7 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
