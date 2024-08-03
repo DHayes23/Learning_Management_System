@@ -1,0 +1,81 @@
+:root {
+    --text-color: #e2d0c5;
+    --accent-color-1: #ff871b;
+    --accent-color-2: #98af83;
+    --background-color-main: #282828;
+    --background-color-dark: #1c2021;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    background-color: var(--background-color-main);
+    background-size: cover;
+    /* Applies scrollbar changes to non-Webkit based browsers to Firefox browsers */
+    scrollbar-color: var(--background-color-dark);
+    scrollbar-width: 10px;
+}
+
+.navbar {
+    background-color: var(--background-color-dark); 
+    background-size: cover;
+}
+
+.navbar-brand {
+    color: var(--accent-color-2);
+    font-size: 2.3rem;
+    margin-left: 2rem;
+    font-weight: bold;
+}
+
+.navbar-brand:hover {
+    color: var(--accent-color-2);
+}
+
+.navbar-brand:visited {
+    color: var(--accent-color-2);
+}
+
+.nav-link {
+    color: var(--text-color);
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    color: var(--accent-color-1);
+}
+
+.nav-link:last-of-type {
+    margin-right: 2rem;
+}
+
+#logout-form {
+    display: none;
+}
+
+.spacer-element {
+    margin-top: 500rem;
+}
+
+.test-header {
+    color: var(--accent-color-2);
+}
+
+
+/* Scrollbar for WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background-color-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--background-color-dark);
+    border-radius: 10px;
+    border: 1px solid var(--background-color-dark);
+}
