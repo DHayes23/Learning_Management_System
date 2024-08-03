@@ -144,11 +144,23 @@ body {
     margin-bottom: 25px;
 }
 
-.auth-logout-button-container {
+.auth-link-text {
     text-align: center;
-    margin-top: 0px;
-    margin-bottom: 25px;
+    font-family: "Comfortaa", monospace;
+    margin-top: 15px;
 }
+
+.auth-link-text a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.auth-link-text a:hover {
+    color: var(--accent-color-1);
+    text-decoration: none;
+}
+
 
 .primary-button {
   appearance: none;

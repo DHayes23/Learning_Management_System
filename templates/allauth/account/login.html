@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% load i18n %}
 
 {% block title %}LMS - {% trans "Login" %}{% endblock %}
@@ -8,13 +7,11 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/auth.css' %}">
 
-
 <div class="container">
   <div class="row">
     <div class="col-sm-6 offset-sm-3 col-12">
       <h1 class="auth-heading">Log In</h1>
       <div class="auth-container">              
-        
         <form class="login auth-form" method="POST" action="{% url 'account_login' %}">
             {% csrf_token %}
             
@@ -29,11 +26,13 @@
             <div class="auth-button-container">
               <button class="primaryAction primary-button" type="submit">{% trans "Log In" %}</button>
             </div>
-          </form>          
+        </form>
+        
+        <div class="auth-link-text">
+          <a href="{% url 'account_reset_password' %}">{% trans "Forgotten your password?" %}</a>
+        </div>
     </div>
   </div>
 </div>
-
-
 
 {% endblock %}
