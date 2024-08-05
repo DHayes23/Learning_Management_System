@@ -16,59 +16,86 @@ def save_user_profile(sender, instance, **kwargs):
 @receiver(m2m_changed, sender=Profile.assigned_paths.through)
 def update_student_progress_for_assigned_paths(sender, instance, action, reverse, model, pk_set, **kwargs):
     if action == "post_add":
-        if not reverse:  # Adding paths to a student
-            profile = instance
-            path_ids = pk_set
-            for path_id in path_ids:
-                path = Path.objects.get(pk=path_id)
-                for module in path.modules.all():
-                    for lesson in module.lessons.all():
-                        StudentProgress.objects.get_or_create(
-                            student=profile.user,
-                            module=module,
-                            lesson=lesson,
-                            defaults={'completed': False}
-                        )
-        else:  # Adding students to a path
-            path = instance
-            user_ids = pk_set
-            for user_id in user_ids:
-                user = User.objects.get(pk=user_id)
-                for module in path.modules.all():
-                    for lesson in module.lessons.all():
-                        StudentProgress.objects.get_or_create(
-                            student=user,
-                            module=module,
-                            lesson=lesson,
-                            defaults={'completed': False}
-                        )
+        profile = instance if not reverse else User.objects.get(pk=list(pk_set)[0]).profile
+        path_ids = pk_set if not reverse else [instance.pk]
+        
+        for path_id in path_ids:
+            path = Path.objects.get(pk=path_id)
+            for module in path.modules.all():
+                for lesson in module.lessons.all():
+                    StudentProgress.objects.get_or_create(
+                        student=profile.user,
+                        lesson=lesson,
+                        defaults={'completed': False}
+                    )
 
     elif action == "post_remove":
-        if not reverse:  # Removing paths from a student
-            profile = instance
-            path_ids = pk_set
-            for path_id in path_ids:
-                path = Path.objects.get(pk=path_id)
-                for module in path.modules.all():
-                    StudentProgress.objects.filter(
-                        student=profile.user,
-                        module=module,
-                        lesson__in=module.lessons.all()
-                    ).delete()
-        else:  # Removing students from a path
-            path = instance
-            user_ids = pk_set
-            for user_id in user_ids:
-                user = User.objects.get(pk=user_id)
-                for module in path.modules.all():
-                    StudentProgress.objects.filter(
-                        student=user,
-                        module=module,
-                        lesson__in=module.lessons.all()
-                    ).delete()
+        profile = instance if not reverse else User.objects.get(pk=list(pk_set)[0]).profile
+        path_ids = pk_set if not reverse else [instance.pk]
+
+        for path_id in path_ids:
+            path = Path.objects.get(pk=path_id)
+            for module in path.modules.all():
+                StudentProgress.objects.filter(
+                    student=profile.user,
+                    lesson__in=module.lessons.all()
+                ).delete()
 
 @receiver(m2m_changed, sender=Module.lessons.through)
-def update_student_progress_for_new_lesson(sender, instance, action, reverse, model, pk_set, **kwargs):
+def update_student_progress_for_lessons(sender, instance, action, reverse, model, pk_set, **kwargs):
+    if action == "post_add":
+        module = instance if not reverse else Module.objects.get(pk=list(pk_set)[0])
+        lesson_ids = pk_set if not reverse else [instance.pk]
+
+        for lesson_id in lesson_ids:
+            lesson = Lesson.objects.get(pk=lesson_id)
+            for path in module.paths.all():
+                for student in path.students.all():
+                    StudentProgress.objects.get_or_create(
+                        student=student.user,
+                        lesson=lesson,
+                        defaults={'completed': False}
+                    )
+
+    elif action == "post_remove":
+        module = instance if not reverse else Module.objects.get(pk=list(pk_set)[0])
+        lesson_ids = pk_set if not reverse else [instance.pk]
+
+        for lesson_id in lesson_ids:
+            StudentProgress.objects.filter(
+                lesson_id=lesson_id
+            ).delete()
+
+@receiver(m2m_changed, sender=Path.modules.through)
+def update_student_progress_for_modules_in_path(sender, instance, action, reverse, model, pk_set, **kwargs):
+    if action == "post_add":
+        path = instance if not reverse else Path.objects.get(pk=list(pk_set)[0])
+        module_ids = pk_set if not reverse else [instance.pk]
+
+        for module_id in module_ids:
+            module = Module.objects.get(pk=module_id)
+            for student in path.students.all():
+                for lesson in module.lessons.all():
+                    StudentProgress.objects.get_or_create(
+                        student=student.user,
+                        lesson=lesson,
+                        defaults={'completed': False}
+                    )
+
+    elif action == "post_remove":
+        path = instance if not reverse else Path.objects.get(pk=list(pk_set)[0])
+        module_ids = pk_set if not reverse else [instance.pk]
+
+        for module_id in module_ids:
+            module = Module.objects.get(pk=module_id)
+            for student in path.students.all():
+                StudentProgress.objects.filter(
+                    student=student.user,
+                    lesson__in=module.lessons.all()
+                ).delete()
+
+@receiver(m2m_changed, sender=Module.lessons.through)
+def update_student_progress_on_lesson_module_change(sender, instance, action, reverse, model, pk_set, **kwargs):
     if action == "post_add":
         if not reverse:  # Adding lessons to the module
             module = instance
@@ -79,7 +106,6 @@ def update_student_progress_for_new_lesson(sender, instance, action, reverse, mo
                     for student in path.students.all():
                         StudentProgress.objects.get_or_create(
                             student=student.user,
-                            module=module,
                             lesson=lesson,
                             defaults={'completed': False}
                         )
@@ -92,7 +118,6 @@ def update_student_progress_for_new_lesson(sender, instance, action, reverse, mo
                     for student in path.students.all():
                         StudentProgress.objects.get_or_create(
                             student=student.user,
-                            module=module,
                             lesson=lesson,
                             defaults={'completed': False}
                         )
@@ -102,68 +127,15 @@ def update_student_progress_for_new_lesson(sender, instance, action, reverse, mo
             module = instance
             lesson_ids = pk_set
             for lesson_id in lesson_ids:
+                # Delete student progress related to this lesson
                 StudentProgress.objects.filter(
-                    module=module,
                     lesson_id=lesson_id
                 ).delete()
         else:  # Removing modules from a lesson
             lesson = instance
             module_ids = pk_set
             for module_id in module_ids:
+                # Delete student progress related to this lesson in the module
                 StudentProgress.objects.filter(
-                    module_id=module_id,
                     lesson=lesson
                 ).delete()
-
-@receiver(m2m_changed, sender=Path.modules.through)
-def update_student_progress_for_modules_in_path(sender, instance, action, reverse, model, pk_set, **kwargs):
-    if action == "post_add":
-        if not reverse:  # Adding modules to the path
-            path = instance
-            module_ids = pk_set
-            for module_id in module_ids:
-                module = Module.objects.get(pk=module_id)
-                for student in path.students.all():
-                    for lesson in module.lessons.all():
-                        StudentProgress.objects.get_or_create(
-                            student=student.user,
-                            module=module,
-                            lesson=lesson,
-                            defaults={'completed': False}
-                        )
-
-    elif action == "post_remove":
-        if not reverse:  # Removing modules from the path
-            path = instance
-            module_ids = pk_set
-            for module_id in module_ids:
-                module = Module.objects.get(pk=module_id)
-                for student in path.students.all():
-                    StudentProgress.objects.filter(
-                        student=student.user,
-                        module=module,
-                        lesson__in=module.lessons.all()
-                    ).delete()
-        else:  # Removing paths from a module
-            module = instance
-            path_ids = pk_set
-            for path_id in path_ids:
-                path = Path.objects.get(pk=path_id)
-                for student in path.students.all():
-                    StudentProgress.objects.filter(
-                        student=student.user,
-                        module=module,
-                        lesson__in=module.lessons.all()
-                    ).delete()
-
-@receiver(post_save, sender=Module)
-def update_student_progress_for_module(sender, instance, **kwargs):
-    for lesson in instance.lessons.all():
-        for path in instance.paths.all():
-            for student in path.students.all():
-                StudentProgress.objects.get_or_create(
-                    student=student.user,
-                    module=instance,
-                    lesson=lesson,
-                    defaults={'completed': False}
-                )
