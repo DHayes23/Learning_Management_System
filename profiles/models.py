@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from content.models import Path, Module, StudentProgress
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -8,7 +9,6 @@ class Profile(models.Model):
         ('trainer', 'Trainer'),
         ('manager', 'Manager'),
     ]
-
     COHORT_CHOICES = [
         ('Cohort 1', 'Cohort 1'),
         ('Cohort 2', 'Cohort 2'),
@@ -23,6 +23,24 @@ class Profile(models.Model):
     ]
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='student')
     cohort = models.CharField(max_length=20, choices=COHORT_CHOICES, blank=True, null=True)
+    assigned_paths = models.ManyToManyField(Path, related_name='students', blank=True)
 
     def __str__(self):
         return self.user.username
+
+    def get_assigned_modules(self):
+        assigned_modules = Module.objects.filter(paths__in=self.assigned_paths.all()).distinct()
+        return assigned_modules
+
+    def get_completed_paths(self):
+        completed_paths = []
+        for path in self.assigned_paths.all():
+            modules = path.modules.all()
+            all_modules_completed = True
+            for module in modules:
+                if not module.is_completed_by_student(self.user):
+                    all_modules_completed = False
+                    break
+            if all_modules_completed:
+                completed_paths.append(path)
+        return completed_paths
