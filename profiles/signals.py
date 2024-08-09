@@ -25,7 +25,6 @@ def update_student_progress_for_assigned_paths(sender, instance, action, reverse
                     for lesson in module.lessons.all():
                         StudentProgress.objects.get_or_create(
                             student=profile.user,
-                            module=module,
                             lesson=lesson,
                             defaults={'completed': False}
                         )
@@ -38,7 +37,6 @@ def update_student_progress_for_assigned_paths(sender, instance, action, reverse
                     for lesson in module.lessons.all():
                         StudentProgress.objects.get_or_create(
                             student=user,
-                            module=module,
                             lesson=lesson,
                             defaults={'completed': False}
                         )
@@ -50,22 +48,26 @@ def update_student_progress_for_assigned_paths(sender, instance, action, reverse
             for path_id in path_ids:
                 path = Path.objects.get(pk=path_id)
                 for module in path.modules.all():
-                    StudentProgress.objects.filter(
-                        student=profile.user,
-                        module=module,
-                        lesson__in=module.lessons.all()
-                    ).delete()
+                    for lesson in module.lessons.all():
+                        other_paths_with_lesson = profile.assigned_paths.filter(modules__lessons=lesson).exclude(pk=path_id).exists()
+                        if not other_paths_with_lesson:
+                            StudentProgress.objects.filter(
+                                student=profile.user,
+                                lesson=lesson
+                            ).delete()
         else:  # Removing students from a path
             path = instance
             user_ids = pk_set
             for user_id in user_ids:
                 user = User.objects.get(pk=user_id)
                 for module in path.modules.all():
-                    StudentProgress.objects.filter(
-                        student=user,
-                        module=module,
-                        lesson__in=module.lessons.all()
-                    ).delete()
+                    for lesson in module.lessons.all():
+                        other_paths_with_lesson = user.profile.assigned_paths.filter(modules__lessons=lesson).exclude(pk=path.pk).exists()
+                        if not other_paths_with_lesson:
+                            StudentProgress.objects.filter(
+                                student=user,
+                                lesson=lesson
+                            ).delete()
 
 @receiver(m2m_changed, sender=Module.lessons.through)
 def update_student_progress_for_new_lesson(sender, instance, action, reverse, model, pk_set, **kwargs):
@@ -79,7 +81,6 @@ def update_student_progress_for_new_lesson(sender, instance, action, reverse, mo
                     for student in path.students.all():
                         StudentProgress.objects.get_or_create(
                             student=student.user,
-                            module=module,
                             lesson=lesson,
                             defaults={'completed': False}
                         )
@@ -92,7 +93,6 @@ def update_student_progress_for_new_lesson(sender, instance, action, reverse, mo
                     for student in path.students.all():
                         StudentProgress.objects.get_or_create(
                             student=student.user,
-                            module=module,
                             lesson=lesson,
                             defaults={'completed': False}
                         )
@@ -103,7 +103,6 @@ def update_student_progress_for_new_lesson(sender, instance, action, reverse, mo
             lesson_ids = pk_set
             for lesson_id in lesson_ids:
                 StudentProgress.objects.filter(
-                    module=module,
                     lesson_id=lesson_id
                 ).delete()
         else:  # Removing modules from a lesson
@@ -111,7 +110,6 @@ def update_student_progress_for_new_lesson(sender, instance, action, reverse, mo
             module_ids = pk_set
             for module_id in module_ids:
                 StudentProgress.objects.filter(
-                    module_id=module_id,
                     lesson=lesson
                 ).delete()
 
@@ -127,7 +125,6 @@ def update_student_progress_for_modules_in_path(sender, instance, action, revers
                     for lesson in module.lessons.all():
                         StudentProgress.objects.get_or_create(
                             student=student.user,
-                            module=module,
                             lesson=lesson,
                             defaults={'completed': False}
                         )
@@ -141,7 +138,6 @@ def update_student_progress_for_modules_in_path(sender, instance, action, revers
                 for student in path.students.all():
                     StudentProgress.objects.filter(
                         student=student.user,
-                        module=module,
                         lesson__in=module.lessons.all()
                     ).delete()
         else:  # Removing paths from a module
@@ -152,18 +148,5 @@ def update_student_progress_for_modules_in_path(sender, instance, action, revers
                 for student in path.students.all():
                     StudentProgress.objects.filter(
                         student=student.user,
-                        module=module,
                         lesson__in=module.lessons.all()
                     ).delete()
-
-@receiver(post_save, sender=Module)
-def update_student_progress_for_module(sender, instance, **kwargs):
-    for lesson in instance.lessons.all():
-        for path in instance.paths.all():
-            for student in path.students.all():
-                StudentProgress.objects.get_or_create(
-                    student=student.user,
-                    module=instance,
-                    lesson=lesson,
-                    defaults={'completed': False}
-                )
