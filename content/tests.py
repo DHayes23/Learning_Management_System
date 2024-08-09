@@ -60,4 +60,16 @@ class ContentModelTest(TestCase):
         module.delete()
 
         self.assertEqual(Lesson.objects.count(), 1, "Lesson should not be deleted when Module is deleted.")
-        self.assertNotIn(module, lesson.modules.all(), "Lesson should not be associated with any module after the module is deleted.")
+        self.assertEqual(lesson.modules.count(), 0, "Lesson should not be associated with any module after the module is deleted.")
+
+    def test_lesson_can_be_added_to_multiple_modules(self):
+        # Test that a lesson can be added to multiple modules
+        module1 = Module.objects.create(name='Module 1')
+        module2 = Module.objects.create(name='Module 2')
+        lesson = Lesson.objects.create(name='Lesson 1', lesson_type='text')
+        module1.lessons.add(lesson)
+        module2.lessons.add(lesson)
+
+        self.assertIn(lesson, module1.lessons.all(), "Lesson should be in Module 1.")
+        self.assertIn(lesson, module2.lessons.all(), "Lesson should be in Module 2.")
+        self.assertEqual(lesson.modules.count(), 2, "Lesson should be associated with two modules.")
