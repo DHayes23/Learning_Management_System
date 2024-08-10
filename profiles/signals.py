@@ -49,7 +49,7 @@ def update_student_progress_for_assigned_paths(sender, instance, action, reverse
                 path = Path.objects.get(pk=path_id)
                 for module in path.modules.all():
                     for lesson in module.lessons.all():
-                        other_paths_with_lesson = profile.assigned_paths.filter(modules__lessons=lesson).exclude(pk=path_id).exists()
+                        other_paths_with_lesson = profile.assigned_paths.filter(modules__lessons=lesson).exists()
                         if not other_paths_with_lesson:
                             StudentProgress.objects.filter(
                                 student=profile.user,
@@ -62,7 +62,7 @@ def update_student_progress_for_assigned_paths(sender, instance, action, reverse
                 user = User.objects.get(pk=user_id)
                 for module in path.modules.all():
                     for lesson in module.lessons.all():
-                        other_paths_with_lesson = user.profile.assigned_paths.filter(modules__lessons=lesson).exclude(pk=path.pk).exists()
+                        other_paths_with_lesson = user.profile.assigned_paths.filter(modules__lessons=lesson).exists()
                         if not other_paths_with_lesson:
                             StudentProgress.objects.filter(
                                 student=user,
@@ -70,7 +70,7 @@ def update_student_progress_for_assigned_paths(sender, instance, action, reverse
                             ).delete()
 
 @receiver(m2m_changed, sender=Module.lessons.through)
-def update_student_progress_for_new_lesson(sender, instance, action, reverse, model, pk_set, **kwargs):
+def update_student_progress_for_lessons_in_module(sender, instance, action, reverse, model, pk_set, **kwargs):
     if action == "post_add":
         if not reverse:  # Adding lessons to the module
             module = instance
@@ -102,16 +102,29 @@ def update_student_progress_for_new_lesson(sender, instance, action, reverse, mo
             module = instance
             lesson_ids = pk_set
             for lesson_id in lesson_ids:
-                StudentProgress.objects.filter(
-                    lesson_id=lesson_id
-                ).delete()
+                lesson = Lesson.objects.get(pk=lesson_id)
+                for path in module.paths.all():
+                    for student in path.students.all():
+                        # Check if the lesson is still part of any other modules in the assigned paths
+                        still_assigned = student.user.profile.assigned_paths.filter(modules__lessons=lesson).exists()
+                        if not still_assigned:
+                            StudentProgress.objects.filter(
+                                student=student.user,
+                                lesson=lesson
+                            ).delete()
         else:  # Removing modules from a lesson
             lesson = instance
             module_ids = pk_set
             for module_id in module_ids:
-                StudentProgress.objects.filter(
-                    lesson=lesson
-                ).delete()
+                module = Module.objects.get(pk=module_id)
+                for path in module.paths.all():
+                    for student in path.students.all():
+                        still_assigned = student.user.profile.assigned_paths.filter(modules__lessons=lesson).exists()
+                        if not still_assigned:
+                            StudentProgress.objects.filter(
+                                student=student.user,
+                                lesson=lesson
+                            ).delete()
 
 @receiver(m2m_changed, sender=Path.modules.through)
 def update_student_progress_for_modules_in_path(sender, instance, action, reverse, model, pk_set, **kwargs):
@@ -136,17 +149,23 @@ def update_student_progress_for_modules_in_path(sender, instance, action, revers
             for module_id in module_ids:
                 module = Module.objects.get(pk=module_id)
                 for student in path.students.all():
-                    StudentProgress.objects.filter(
-                        student=student.user,
-                        lesson__in=module.lessons.all()
-                    ).delete()
+                    for lesson in module.lessons.all():
+                        still_assigned = student.user.profile.assigned_paths.filter(modules__lessons=lesson).exists()
+                        if not still_assigned:
+                            StudentProgress.objects.filter(
+                                student=student.user,
+                                lesson=lesson
+                            ).delete()
         else:  # Removing paths from a module
             module = instance
             path_ids = pk_set
             for path_id in path_ids:
                 path = Path.objects.get(pk=path_id)
                 for student in path.students.all():
-                    StudentProgress.objects.filter(
-                        student=student.user,
-                        lesson__in=module.lessons.all()
-                    ).delete()
+                    for lesson in module.lessons.all():
+                        still_assigned = student.user.profile.assigned_paths.filter(modules__lessons=lesson).exists()
+                        if not still_assigned:
+                            StudentProgress.objects.filter(
+                                student=student.user,
+                                lesson=lesson
+                            ).delete()
