@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.urls import reverse
 from .models import Profile
 from .decorators import role_required
 from django.http import HttpResponse
@@ -8,14 +9,17 @@ from django.core.exceptions import PermissionDenied
 class ProfileModelTest(TestCase):
     
     def test_profile_creation(self):
+        # Test that a profile is automatically created when a new user is created
         user = User.objects.create(username='testuser', password='testpassword')
         self.assertTrue(Profile.objects.filter(user=user).exists(), "Profile should be created when a new user is created.")
 
     def test_default_role_assignment(self):
+        # Test that the default role assigned to a new profile is 'Student'
         user = User.objects.create(username='testuser', password='testpassword')
         self.assertEqual(user.profile.role, 'student', "The default role should be 'Student'.")
 
     def test_cohort_choices(self):
+        # Test that the cohort choices are correctly defined in the Profile model
         cohort_choices = Profile.COHORT_CHOICES
         expected_choices = [
             ('Cohort 1', 'Cohort 1'),
@@ -31,19 +35,28 @@ class ProfileModelTest(TestCase):
         ]
         self.assertEqual(cohort_choices, expected_choices, "Cohort choices should be present as defined.")
 
+class ProfileAdminTest(TestCase):
+
+    def setUp(self):
+        # Create a user and profile for testing the admin interface
+        self.user = User.objects.create(username='adminuser', password='adminpassword')
+        self.profile = self.user.profile
 
 class RoleBasedAccessControlTest(TestCase):
 
     def setUp(self):
+        # Set up different roles for testing role-based access control
         self.student_user = User.objects.create(username='student', password='testpassword123')
         self.trainer_user = User.objects.create(username='trainer', password='testpassword123')
         self.trainer_user.profile.role = 'trainer'
         self.trainer_user.profile.save()
 
     def mock_view(self, request):
+        # Mock view for testing role-based access control
         return HttpResponse("Access granted")
 
     def test_access_for_student(self):
+        # Test that students do not have access to views restricted to trainers/managers
         request = self.client.get('/mock-path/')
         request.user = self.student_user
         decorated_view = role_required(['trainer', 'manager'])(self.mock_view)
@@ -51,6 +64,7 @@ class RoleBasedAccessControlTest(TestCase):
             decorated_view(request)
 
     def test_access_for_trainer(self):
+        # Test that trainers have access to views restricted to trainers/managers
         request = self.client.get('/mock-path/')
         request.user = self.trainer_user
         decorated_view = role_required(['trainer', 'manager'])(self.mock_view)
