@@ -202,12 +202,11 @@ def delete_student_progress_for_deleted_path(sender, instance, **kwargs):
             student_progress_qs = StudentProgress.objects.filter(lesson=lesson)
             for student_progress in student_progress_qs:
                 student = student_progress.student
-                # Check if this lesson is part of any other modules assigned to the student's other paths
-                overlapping_modules = Module.objects.filter(
-                    lessons=lesson,
-                    paths__students__user=student
-                ).exclude(paths=instance).exists()
+                # Check if this lesson is part of any other paths assigned to the student
+                overlapping_paths = student.profile.assigned_paths.filter(
+                    modules__lessons=lesson
+                ).exclude(id=instance.id).exists()
 
-                if not overlapping_modules:
-                    # Delete the progress record if this lesson is not part of any other assigned modules
+                if not overlapping_paths:
+                    # Delete the progress record if this lesson is not part of any other assigned paths
                     student_progress.delete()
