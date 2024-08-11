@@ -13,7 +13,6 @@ html {
 body {
     background-color: var(--background-color-main);
     background-size: cover;
-    /* Applies scrollbar changes to non-Webkit based browsers to Firefox browsers */
     scrollbar-color: var(--background-color-dark);
     scrollbar-width: 10px;
 }
@@ -203,3 +202,67 @@ body {
   transform: translateY(2px);
 }
 
+/* Profile and Path Card Styling */
+.profile-heading {
+    color: var(--text-color);
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.section-heading {
+    color: var(--text-color);
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.path-card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.path-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.path-card {
+    background-color: var(--background-color-dark);
+    border: var(--accent-color-1) solid 3px;
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    font-family: "Comfortaa", monospace;
+    color: var(--text-color);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.path-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color-2);
+}
+
+.path-card p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.path-card a {
+    width: 100%;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.path-card:hover {
+    transform: none;
+    box-shadow: none;
+}

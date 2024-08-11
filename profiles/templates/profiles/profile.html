@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="path-card-container">
+    <h1 class="profile-heading">{{ user.username }}'s Profile</h1>
+
+    {% if assigned_paths %}
+        <h2 class="section-heading">Assigned Paths</h2>
+        <div class="path-card-grid">
+            {% for path in assigned_paths %}
+                <div class="path-card">
+                    <h3>{{ path.name }}</h3>
+                    <p>{{ path.description }}</p>
+                    <a href="{% url 'path_detail' path.id %}" class="primary-button">View Modules</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
