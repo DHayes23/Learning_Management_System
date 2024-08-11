@@ -1,8 +1,9 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.urls import reverse
-from .models import Profile
-from .decorators import role_required
+from content.models import Path, Module, Lesson, StudentProgress
+from profiles.models import Profile
+from profiles.decorators import role_required
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 
@@ -35,12 +36,68 @@ class ProfileModelTest(TestCase):
         ]
         self.assertEqual(cohort_choices, expected_choices, "Cohort choices should be present as defined.")
 
-class ProfileAdminTest(TestCase):
+class StudentProgressTest(TestCase):
 
     def setUp(self):
-        # Create a user and profile for testing the admin interface
-        self.user = User.objects.create(username='adminuser', password='adminpassword')
+        # Create users, paths, modules, and lessons for testing
+        self.user = User.objects.create(username='student', password='testpassword123')
         self.profile = self.user.profile
+        self.path1 = Path.objects.create(name='Path 1')
+        self.path2 = Path.objects.create(name='Path 2')
+        self.module1 = Module.objects.create(name='Module 1')
+        self.module2 = Module.objects.create(name='Module 2')
+        self.lesson1 = Lesson.objects.create(name='Lesson 1', lesson_type='text')
+        self.lesson2 = Lesson.objects.create(name='Lesson 2', lesson_type='video')
+        self.lesson3 = Lesson.objects.create(name='Lesson 3', lesson_type='quiz')
+
+    def test_assigning_path_creates_student_progress(self):
+        # Test that assigning a path to a student creates the correct StudentProgress entries
+        self.module1.lessons.add(self.lesson1, self.lesson2)
+        self.path1.modules.add(self.module1)
+        self.profile.assigned_paths.add(self.path1)
+
+        self.assertEqual(StudentProgress.objects.filter(student=self.user).count(), 2, "StudentProgress should be created for each lesson in the assigned path.")
+
+    def test_removing_path_deletes_student_progress(self):
+        # Test that removing a path deletes the correct StudentProgress entries
+        self.module1.lessons.add(self.lesson1, self.lesson2)
+        self.path1.modules.add(self.module1)
+        self.profile.assigned_paths.add(self.path1)
+
+        # Remove the path
+        self.profile.assigned_paths.remove(self.path1)
+
+        self.assertEqual(StudentProgress.objects.filter(student=self.user).count(), 0, "StudentProgress should be deleted when a path is removed.")
+
+    def test_overlapping_modules_handle_progress_correctly(self):
+        # Test that overlapping modules/lessons are handled correctly in StudentProgress
+        self.module1.lessons.add(self.lesson1, self.lesson2)
+        self.module2.lessons.add(self.lesson2, self.lesson3)
+        self.path1.modules.add(self.module1)
+        self.path2.modules.add(self.module2)
+
+        self.profile.assigned_paths.add(self.path1)
+        self.profile.assigned_paths.add(self.path2)
+
+        # Remove path1, which shares lesson2 with path2
+        self.profile.assigned_paths.remove(self.path1)
+
+        # lesson2 should not be deleted because it's still in path2
+        self.assertTrue(StudentProgress.objects.filter(student=self.user, lesson=self.lesson2).exists(), "StudentProgress for lesson2 should not be deleted because it's still part of path2.")
+        self.assertEqual(StudentProgress.objects.filter(student=self.user).count(), 2, "Only lesson1's progress should be deleted, leaving lesson2 and lesson3.")
+
+    def test_removing_module_from_path_updates_student_progress(self):
+        # Test that removing a module from a path updates StudentProgress entries correctly
+        self.module1.lessons.add(self.lesson1, self.lesson2)
+        self.module2.lessons.add(self.lesson3)
+        self.path1.modules.add(self.module1, self.module2)
+        self.profile.assigned_paths.add(self.path1)
+
+        # Remove module1
+        self.path1.modules.remove(self.module1)
+
+        self.assertFalse(StudentProgress.objects.filter(student=self.user, lesson=self.lesson1).exists(), "StudentProgress for lesson1 should be deleted because its module was removed.")
+        self.assertTrue(StudentProgress.objects.filter(student=self.user, lesson=self.lesson3).exists(), "StudentProgress for lesson3 should still exist because it's in another module.")
 
 class RoleBasedAccessControlTest(TestCase):
 
