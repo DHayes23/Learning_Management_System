@@ -8,7 +8,7 @@
         <h2 class="section-heading">Assigned Paths</h2>
         <div class="path-card-grid">
             {% for path in assigned_paths %}
-                <div class="path-card">
+                <div class="path-card" id="card-{{ path.id }}">
                     <h3>{{ path.name }}</h3>
                     <p>{{ path.description }}</p>
                     <a href="javascript:void(0);" class="primary-button" onclick="toggleModules({{ path.id }});">View Modules</a>
@@ -25,22 +25,57 @@
     {% endif %}
 </div>
 
-<!-- JavaScript for toggling the display of modules -->
+<!-- GSAP and JavaScript for toggling and animating the cards -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
 <script>
     function toggleModules(pathId) {
         var modulesContainer = document.getElementById('modules-' + pathId);
+        var selectedCard = document.getElementById('card-' + pathId);
+        var allCards = document.querySelectorAll('.path-card');
+        var body = document.body;
+
         if (modulesContainer.classList.contains('show')) {
             modulesContainer.classList.remove('show');
             setTimeout(function() {
                 modulesContainer.style.display = 'none';
+                body.style.overflow = '';
             }, 300);
+
+            // Move all cards back to their original positions
+            gsap.to(allCards, { duration: 0.5, opacity: 1, transform: "translate(0, 0)" });
         } else {
             modulesContainer.style.display = 'block';
             setTimeout(function() {
                 modulesContainer.classList.add('show');
             }, 10);
+
+            // Prevent scrolling by hiding overflow
+            body.style.overflow = 'hidden';
+
+            // Move unselected cards downwards off the screen
+            allCards.forEach(function(card) {
+                if (card !== selectedCard) {
+                    gsap.to(card, { duration: 0.5, transform: "translateY(200%)", opacity: 0 });
+                }
+            });
+
+            // Calculate the amount to move the selected card to center it horizontally and vertically
+            var cardRect = selectedCard.getBoundingClientRect();
+            var cardWidth = cardRect.width;
+            var cardHeight = cardRect.height;
+            var cardCenterX = cardRect.left + cardWidth / 2;
+            var cardCenterY = cardRect.top + cardHeight / 2;
+            var screenCenterX = window.innerWidth / 2;
+            var screenCenterY = window.innerHeight / 2;
+            var moveX = screenCenterX - cardCenterX;
+            var moveY = screenCenterY - cardCenterY;
+
+            // Move the selected card to the center of the screen using transform
+            gsap.to(selectedCard, { duration: 0.5, transform: `translate(${moveX}px, ${moveY}px)`, ease: "power2.out" });
         }
     }
 </script>
+
+
 
 {% endblock %}
