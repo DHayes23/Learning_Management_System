@@ -11,10 +11,36 @@
                 <div class="path-card">
                     <h3>{{ path.name }}</h3>
                     <p>{{ path.description }}</p>
-                    <a href="{% url 'path_detail' path.id %}" class="primary-button">View Modules</a>
+                    <a href="javascript:void(0);" class="primary-button" onclick="toggleModules({{ path.id }});">View Modules</a>
+                    <div id="modules-{{ path.id }}" class="modules-container">
+                        <ul>
+                            {% for module in path.modules.all %}
+                                <li><a href="{% url 'module_detail' module.id %}">{{ module.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             {% endfor %}
         </div>
     {% endif %}
 </div>
+
+<!-- JavaScript for toggling the display of modules -->
+<script>
+    function toggleModules(pathId) {
+        var modulesContainer = document.getElementById('modules-' + pathId);
+        if (modulesContainer.classList.contains('show')) {
+            modulesContainer.classList.remove('show');
+            setTimeout(function() {
+                modulesContainer.style.display = 'none';
+            }, 300);
+        } else {
+            modulesContainer.style.display = 'block';
+            setTimeout(function() {
+                modulesContainer.classList.add('show');
+            }, 10);
+        }
+    }
+</script>
+
 {% endblock %}
