@@ -64,7 +64,7 @@ class StudentProgressTest(TestCase):
         self.path1.modules.add(self.module1)
         self.profile.assigned_paths.add(self.path1)
 
-        # Now remove the path
+        # Remove the path
         self.profile.assigned_paths.remove(self.path1)
 
         self.assertEqual(StudentProgress.objects.filter(student=self.user).count(), 0, "StudentProgress should be deleted when a path is removed.")
@@ -93,7 +93,7 @@ class StudentProgressTest(TestCase):
         self.path1.modules.add(self.module1, self.module2)
         self.profile.assigned_paths.add(self.path1)
 
-        # Now remove the module1
+        # Remove module1
         self.path1.modules.remove(self.module1)
 
         self.assertFalse(StudentProgress.objects.filter(student=self.user, lesson=self.lesson1).exists(), "StudentProgress for lesson1 should be deleted because its module was removed.")
