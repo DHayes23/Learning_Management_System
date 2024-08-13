@@ -72,13 +72,13 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--background-color-dark);
+    background: var(--background-color-main);
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: var(--background-color-dark);
+    background-color: var(--background-color-main);
     border-radius: 10px;
-    border: 1px solid var(--background-color-dark);
+    border: 2px solid var(--accent-color-1);
 }
 
 /* Authentication Form Styling */
@@ -162,7 +162,7 @@ body {
 
 .primary-button {
     appearance: none;
-    background-color: #FCFCFD;
+    background-color: var(--text-color);
     border-radius: 4px;
     border-width: 0;
     box-shadow: rgba(201, 192, 219, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
@@ -176,6 +176,7 @@ body {
     line-height: 1;
     list-style: none;
     overflow: hidden;
+    padding: 10px;
     padding-left: 16px;
     padding-right: 16px;
     position: relative;
@@ -211,7 +212,7 @@ body {
 
 .section-heading {
     color: var(--text-color);
-    font-size: 2rem;
+    font-size: 2.3rem;
     text-align: center;
     margin-bottom: 3rem;
 }
@@ -237,16 +238,18 @@ body {
     border: var(--accent-color-1) solid 3px;
     border-radius: 15px;
     padding: 1.5rem;
+    padding-bottom: 2rem;
     text-align: center;
     font-family: "Comfortaa", monospace;
     color: var(--text-color);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
     transition: box-shadow 0.3s ease-in-out;
+    margin-top: 2rem;
 }
 
 .path-card h3 {
     font-size: 1.5rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
     color: var(--accent-color-2);
 }
 
@@ -268,17 +271,10 @@ body {
 
 /* Module Display Animations */
 .modules-container {
-    display: none;
-    margin-top: 1rem;
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.3s ease-out;
-}
-
-.modules-container.show {
-    display: block;
-    max-height: 1000px;
-    transition: max-height 0.3s ease-in;
+    margin-top: 0.5rem;
+    max-height: 300px;
+    overflow-y: auto;
+    transition: max-height 0.3s ease-in-out;
 }
 
 .modules-container ul {
@@ -290,13 +286,17 @@ body {
 
 .modules-container ul li {
     background-color: var(--background-color-dark);
-    color: var(--text-color);
+    color: var(--text-color); 
     padding: 0.5rem;
-    border-bottom: 1px solid var(--accent-color-1);
 }
 
 .modules-container ul li:last-child {
     border-bottom: none;
+}
+
+.modules-container ul li a {
+    border-bottom: none;
+    color: var(--text-color);
 }
 
 /* Module Detail Page Styling */
