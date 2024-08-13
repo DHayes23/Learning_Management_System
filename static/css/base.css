@@ -6,8 +6,11 @@
     --background-color-dark: #1c2021;
 }
 
-html {
+html, body {
     height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
 body {
@@ -15,28 +18,48 @@ body {
     background-size: cover;
     scrollbar-color: var(--background-color-dark);
     scrollbar-width: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Navbar Styling */
-.navbar {
-    background-color: var(--background-color-dark); 
-    background-size: cover;
+/* Container for navbar and main content */
+.container-fluid.d-flex {
+    height: 100vh;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+/* Vertical Navbar Styling */
+#main-navbar {
+    width: 250px;
+    background-color: var(--background-color-dark);
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 1rem;
 }
 
 .navbar-brand {
     font-family: "Comfortaa",monospace;
     color: var(--accent-color-2);
-    font-size: 2.3rem;
-    margin-left: 2rem;
+    font-size: 1.5rem;
+    padding-left: 1rem;
     font-weight: bold;
+    text-align: left;
+    line-height: 1.2;
+}
+
+.navbar-brand .brand-text {
+    display: block;
 }
 
 .navbar-brand:hover {
     color: var(--accent-color-2);
 }
 
-.navbar-brand:visited {
-    color: var(--accent-color-2);
+.navbar-nav .nav-item {
+    margin-bottom: 1rem;
 }
 
 .nav-link {
@@ -44,26 +67,22 @@ body {
     color: var(--text-color);
     font-size: 1.3rem;
     font-weight: bold;
+    padding-left: 1rem;
 }
 
 .nav-link:hover {
     color: var(--accent-color-1);
 }
 
-.nav-link:last-of-type {
-    margin-right: 2rem;
-}
-
-#logout-form {
-    display: none;
+/* Main Content Area Styling */
+.content-area {
+    padding: 2rem;
+    overflow-y: auto;
+    background-color: var(--background-color-main);
 }
 
 .spacer-element {
-    margin-top: 7rem;
-}
-
-.test-header {
-    color: var(--accent-color-2);
+    display: none;
 }
 
 /* Scrollbar Styling for WebKit browsers (Chrome, Safari, Edge) */
@@ -81,8 +100,12 @@ body {
     border: 2px solid var(--accent-color-1);
 }
 
-/* Authentication Form Styling */
+/* Additional styles for other elements */
+.test-header {
+    color: var(--accent-color-2);
+}
 
+/* Authentication Form Styling */
 .auth-heading {
     text-align: center;
     font-size: 3.5rem;
@@ -286,7 +309,7 @@ body {
 
 .modules-container ul li {
     background-color: var(--background-color-dark);
-    color: var(--text-color); 
+    color: var (--text-color); 
     padding: 0.5rem;
 }
 
@@ -322,13 +345,13 @@ body {
 }
 
 .lesson-card {
-    background-color: var(--background-color-dark);
+    background-color: var (--background-color-dark);
     border: var(--accent-color-1) solid 3px;
     border-radius: 15px;
     padding: 1.5rem;
     text-align: center;
     font-family: "Comfortaa", monospace;
-    color: var(--text-color);
+    color: var (--text-color);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
     transition: box-shadow 0.3s ease-in-out;
 }
