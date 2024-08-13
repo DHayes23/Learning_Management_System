@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="module-detail-container">
+    <h1 class="module-heading">{{ module.name }}</h1>
+    <h2 class="lesson-description">{{ module.description }}</h2>
+
+    <!-- <h2 class="section-heading">Lessons in this Module</h2> -->
+    <div class="lessons-card-grid">
+        {% for lesson in lessons %}
+            <div class="lesson-card">
+                <h3>{{ lesson.name }}</h3>
+                <p class="lesson-description">{{ lesson.description }}</p>
+                <ul class="lesson-details">
+                    <li><strong>Type:</strong> {{ lesson.get_lesson_type_display }}</li>
+                    <li><strong>Points:</strong> {{ lesson.points }}</li>
+                    <li><strong>Difficulty:</strong> {{ lesson.get_difficulty_display }}</li>
+                    <li><strong>Time to Complete:</strong> {{ lesson.time_to_complete }} minutes</li>
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
