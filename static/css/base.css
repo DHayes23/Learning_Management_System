@@ -13,7 +13,6 @@ html {
 body {
     background-color: var(--background-color-main);
     background-size: cover;
-    /* Applies scrollbar changes to non-Webkit based browsers to Firefox browsers */
     scrollbar-color: var(--background-color-dark);
     scrollbar-width: 10px;
 }
@@ -60,13 +59,12 @@ body {
 }
 
 .spacer-element {
-    margin-top: 12.5rem;
+    margin-top: 7rem;
 }
 
 .test-header {
     color: var(--accent-color-2);
 }
-
 
 /* Scrollbar Styling for WebKit browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
@@ -74,13 +72,13 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--background-color-dark);
+    background: var(--background-color-main);
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: var(--background-color-dark);
+    background-color: var(--background-color-main);
     border-radius: 10px;
-    border: 1px solid var(--background-color-dark);
+    border: 2px solid var(--accent-color-1);
 }
 
 /* Authentication Form Styling */
@@ -118,7 +116,7 @@ body {
     border-radius: 50px;
     padding: 20px;
     margin-bottom: 250px;
-  }
+}
 
 .auth-text {
     margin-top: 25px;
@@ -126,6 +124,7 @@ body {
     font-size: 2rem;
     color: red;
 }
+
 .auth-form {
     padding-top: 50px;
     text-align: left;
@@ -161,45 +160,216 @@ body {
     text-decoration: none;
 }
 
-
 .primary-button {
-  appearance: none;
-  background-color: #FCFCFD;
-  border-radius: 4px;
-  border-width: 0;
-  box-shadow: rgba(201, 192, 219, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
-  box-sizing: border-box;
-  color: black;
-  cursor: pointer;
-  display: inline-flex;
-  font-family: "Comfortaa",monospace;
-  height: 48px;
-  justify-content: center;
-  line-height: 1;
-  list-style: none;
-  overflow: hidden;
-  padding-left: 16px;
-  padding-right: 16px;
-  position: relative;
-  text-align: left;
-  text-decoration: none;
-  transition: box-shadow .15s,transform .15s;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
-  will-change: box-shadow,transform;
-  font-size: 2rem;
-  align-items: center;
+    appearance: none;
+    background-color: var(--text-color);
+    border-radius: 4px;
+    border-width: 0;
+    box-shadow: rgba(201, 192, 219, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: black;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: "Comfortaa",monospace;
+    height: 48px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    padding: 10px;
+    padding-left: 16px;
+    padding-right: 16px;
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    transition: box-shadow .15s,transform .15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow,transform;
+    font-size: 2rem;
+    align-items: center;
 }
 
 .primary-button:hover {
-  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
-  transform: translateY(-2px);
+    box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+    transform: translateY(-2px);
 }
 
 .primary-button:active {
-  box-shadow: #D6D6E7 0 3px 7px inset;
-  transform: translateY(2px);
+    box-shadow: #D6D6E7 0 3px 7px inset;
+    transform: translateY(2px);
 }
 
+/* Profile and Path Card Styling */
+.profile-heading {
+    color: var(--text-color);
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.section-heading {
+    color: var(--text-color);
+    font-size: 2.3rem;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.path-card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.path-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 path cards per row */
+    gap: 2rem;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.path-card {
+    background-color: var(--background-color-dark);
+    border: var(--accent-color-1) solid 3px;
+    border-radius: 15px;
+    padding: 1.5rem;
+    padding-bottom: 2rem;
+    text-align: center;
+    font-family: "Comfortaa", monospace;
+    color: var(--text-color);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
+    transition: box-shadow 0.3s ease-in-out;
+    margin-top: 2rem;
+}
+
+.path-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent-color-2);
+}
+
+.path-card p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.path-card a {
+    width: 100%;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+.path-card:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Module Display Animations */
+.modules-container {
+    margin-top: 0.5rem;
+    max-height: 300px;
+    overflow-y: auto;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.modules-container ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    font-family: "Comfortaa",monospace;
+}
+
+.modules-container ul li {
+    background-color: var(--background-color-dark);
+    color: var(--text-color); 
+    padding: 0.5rem;
+}
+
+.modules-container ul li:last-child {
+    border-bottom: none;
+}
+
+.modules-container ul li a {
+    border-bottom: none;
+    color: var(--text-color);
+}
+
+/* Module Detail Page Styling */
+.module-detail-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.module-heading {
+    color: var(--text-color);
+    font-size: 2.2rem; 
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.lessons-card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 lesson cards per row */
+    gap: 2.5rem;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.lesson-card {
+    background-color: var(--background-color-dark);
+    border: var(--accent-color-1) solid 3px;
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    font-family: "Comfortaa", monospace;
+    color: var(--text-color);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.lesson-description {
+    margin-bottom: 22rem;
+    color: var(--text-color);
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 4rem;
+    font-weight: bold;
+}
+
+.lesson-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent-color-2);
+}
+
+.lesson-card p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.lesson-details {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+.lesson-details li {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.lesson-details li strong {
+    color: var(--accent-color-1);
+}
+
+.lesson-card:hover {
+    transform: none;
+    box-shadow: none;
+}

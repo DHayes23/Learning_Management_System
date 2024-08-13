@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="path-card-container">
+    {% if assigned_paths %}
+        <h2 class="section-heading" id="assigned-paths-heading">Assigned Paths</h2>
+        <div class="path-card-grid">
+            {% for path in assigned_paths %}
+                <div class="path-card" id="card-{{ path.id }}" style="position: relative;">
+                    <h3 id="title-{{ path.id }}">{{ path.name }}</h3>
+                    <p>{{ path.description }}</p>
+                    <a href="javascript:void(0);" class="primary-button view-modules-button" onclick="toggleModules({{ path.id }});" id="button-{{ path.id }}" style="width: 75%; display: inline-block;">View Modules</a>
+                    <div id="modules-{{ path.id }}" class="modules-container" style="display: none; max-height: 450px; overflow-y: auto; position: relative; top: 20px; left: 0; right: 0;">
+                        <ul style="margin-top: 25px;">
+                            {% for module in path.modules.all %}
+                                <li><a href="{% url 'module_detail' module.id %}">{{ module.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+<!-- GSAP and JavaScript for toggling and animating the cards -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
+<script>
+    function toggleModules(pathId) {
+        var modulesContainer = document.getElementById('modules-' + pathId);
+        var selectedCard = document.getElementById('card-' + pathId);
+        var viewModulesButton = document.getElementById('button-' + pathId);
+        var allCards = document.querySelectorAll('.path-card');
+        var gridContainer = document.querySelector('.path-card-grid');
+        var heading = document.getElementById('assigned-paths-heading');
+        var body = document.body;
+        var isSelected = modulesContainer.classList.contains('show');
+
+        // Disable the button during animations
+        viewModulesButton.style.pointerEvents = 'none';
+        viewModulesButton.style.opacity = '0.6';
+
+        if (isSelected) {
+            gsap.to(viewModulesButton, {
+                duration: 0.5,
+                width: "auto", 
+                onComplete: function () {
+                    viewModulesButton.innerHTML = 'View Modules';
+                }
+            });
+
+            gsap.to(modulesContainer.querySelectorAll('li'), {
+                duration: 0.5,
+                opacity: 0,
+                y: "-20px",
+                stagger: { each: 0.1, from: "end" },
+                onComplete: function () {
+                    modulesContainer.style.display = 'none';
+
+                    gsap.to(selectedCard, {
+                        duration: 1,
+                        width: selectedCard.dataset.originalWidth,
+                        height: selectedCard.dataset.originalHeight,
+                        padding: "1.5rem 1.5rem 2rem 1.5rem",
+                        onComplete: function () {
+                            gsap.to(selectedCard, {
+                                duration: 1.5,
+                                left: selectedCard.dataset.originalLeft,
+                                top: selectedCard.dataset.originalTop,
+                                onComplete: function () {
+                                    gsap.set(selectedCard, { position: '', clearProps: 'all' });
+                                    gridContainer.style.width = '';
+                                    gridContainer.style.height = '';
+                                    gridContainer.style.gridTemplateColumns = '';
+
+                                    gsap.to(allCards, { duration: 0.5, opacity: 1, transform: "translate(0, 0)", clearProps: 'all' });
+
+                                    gsap.to(heading, { duration: 0.5, y: "0px", opacity: 1 });
+
+                                    // Enable the button after all animations are finished
+                                    viewModulesButton.style.pointerEvents = 'auto';
+                                    viewModulesButton.style.opacity = '';
+                                }
+                            });
+                        }
+                    });
+
+                    modulesContainer.classList.remove('show');
+                    body.style.overflow = ''; 
+                }
+            });
+
+        } else {
+            gsap.to(heading, { duration: 0.5, y: "-100px", opacity: 0 });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            setTimeout(function () {
+                body.style.overflow = 'hidden';
+
+                gridContainer.style.width = gridContainer.offsetWidth + 'px';
+                gridContainer.style.height = gridContainer.offsetHeight + 'px';
+                gridContainer.style.gridTemplateColumns = getComputedStyle(gridContainer).gridTemplateColumns;
+
+                allCards.forEach(function (card) {
+                    if (card !== selectedCard) {
+                        gsap.to(card, { duration: 1, transform: "translateY(200%)", opacity: 0 });
+                    }
+                });
+
+                var cardRect = selectedCard.getBoundingClientRect();
+
+                selectedCard.dataset.originalLeft = cardRect.left + 'px';
+                selectedCard.dataset.originalTop = cardRect.top + 'px';
+                selectedCard.dataset.originalWidth = cardRect.width + 'px';
+                selectedCard.dataset.originalHeight = cardRect.height + 'px';
+
+                var screenCenterX = window.innerWidth / 2;
+                var screenCenterY = window.innerHeight / 2;
+
+                var newWidth = cardRect.width * 2;
+                var newHeight = window.innerHeight * 0.8;
+                var newLeft = screenCenterX - newWidth / 2;
+                var newTop = screenCenterY - newHeight / 2;
+
+                selectedCard.dataset.centerLeft = newLeft + 'px';
+                selectedCard.dataset.centerTop = newTop + 'px';
+                selectedCard.dataset.newWidth = newWidth + 'px';
+                selectedCard.dataset.newHeight = newHeight + 'px';
+
+                gsap.set(selectedCard, { position: 'fixed', left: cardRect.left, top: cardRect.top, width: cardRect.width, height: cardRect.height });
+
+                gsap.to(viewModulesButton, {
+                    duration: 0.5,
+                    width: "auto", 
+                    onComplete: function () {
+                        viewModulesButton.innerHTML = '<i class="fas fa-arrow-left"></i> Back';
+                    }
+                });
+
+                gsap.to(selectedCard, {
+                    duration: 1.5,
+                    left: newLeft,
+                    top: newTop,
+                    ease: "power2.out",
+                    onComplete: function () {
+                        gsap.to(selectedCard, {
+                            duration: 1,
+                            width: newWidth,
+                            height: newHeight,
+                            padding: "2rem",
+                            onComplete: function () {
+                                modulesContainer.style.display = 'block';
+                                gsap.fromTo(modulesContainer.querySelectorAll('li'), 
+                                    { opacity: 0, y: "-50px" },  
+                                    { duration: 1, opacity: 1, y: "0px", stagger: { each: 0.15, from: "start" }, ease: "power1.out" }
+                                );
+                                modulesContainer.classList.add('show');
+
+                                // Enable the button after all animations have finished
+                                viewModulesButton.style.pointerEvents = 'auto';
+                                viewModulesButton.style.opacity = ''; 
+                            }
+                        });
+                    }
+                });
+
+            }, 100);
+        }
+    }
+</script>
+
+{% endblock %}
