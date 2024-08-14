@@ -20,6 +20,8 @@
                 </div>
             {% endfor %}
         </div>
+    {% else %}
+        <h3 class="section-header">No paths assigned.</h3>
     {% endif %}
 </div>
 
@@ -38,15 +40,12 @@
         var contentArea = document.querySelector('.content-area');
         var isSelected = modulesContainer.classList.contains('show');
 
-        // Disable the button during animations
         viewModulesButton.style.pointerEvents = 'none';
         viewModulesButton.style.opacity = '0.6';
 
         if (isSelected) {
-            // Timeline for closing the card
             var tlClose = gsap.timeline({
                 onComplete: function () {
-                    // After the closing animation, reset the card to its original size and position
                     gsap.to(selectedCard, {
                         duration: 1.5,
                         width: selectedCard.dataset.originalWidth,
@@ -68,7 +67,6 @@
                 }
             });
 
-            // Hide the module list and scale down the title
             tlClose.to(modulesContainer.querySelectorAll('li'), {
                 duration: 0.5,
                 opacity: 0,
@@ -84,7 +82,6 @@
                 ease: "power1.out",
             }, "-=0.3");
 
-            // Change the button text back to 'View Modules'
             tlClose.to(viewModulesButton, {
                 duration: 0.5,
                 width: "auto", 
@@ -143,10 +140,8 @@
                     }
                 });
 
-                // Timeline for opening the card
                 var tlOpen = gsap.timeline();
 
-                // First, animate the card size and padding
                 tlOpen.to(selectedCard, {
                     duration: 1,
                     width: newWidth,
@@ -156,7 +151,6 @@
                     padding: "2rem",
                 });
 
-                // Then, display the module list with its animation
                 tlOpen.to(modulesContainer, {
                     display: 'block',
                     onStart: function() {

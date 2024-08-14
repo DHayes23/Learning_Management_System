@@ -10,15 +10,13 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+    overflow: hidden;
     border-top: 1px solid var(--text-color);
 }
 
 body {
     background-color: var(--background-color-main);
     background-size: cover;
-    scrollbar-color: var(--background-color-dark);
-    scrollbar-width: 10px;
     display: flex;
     flex-direction: column;
 }
@@ -29,12 +27,12 @@ body {
     display: flex;
     padding: 0;
     margin: 0;
-    
+    overflow: hidden;
 }
 
 /* Vertical Navbar Styling */
 #main-navbar {
-    width: 250px;
+    width: 275px;
     background-color: var(--background-color-dark);
     height: 100vh;
     overflow-y: auto;
@@ -43,8 +41,12 @@ body {
     border-right: 2px solid var(--text-color);
 }
 
+.nav-divider {
+    height: 3rem;
+}
+
 .navbar-brand {
-    font-family: "Comfortaa",monospace;
+    font-family: "Comfortaa", monospace;
     color: var(--accent-color-2);
     font-size: 1.5rem;
     padding-left: 1rem;
@@ -66,11 +68,19 @@ body {
 }
 
 .nav-link {
-    font-family: "Comfortaa",monospace;
+    font-family: "Comfortaa", monospace;
     color: var(--text-color);
     font-size: 1.3rem;
     font-weight: bold;
     padding-left: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.fa-solid, .fa-sharp {
+    font-size: 1.5rem;
+    vertical-align: middle;
+    margin-right: 1rem;
 }
 
 .nav-link:hover {
@@ -79,11 +89,11 @@ body {
 
 /* Main Content Area Styling */
 .content-area {
+    flex-grow: 1;
     padding: 2rem;
     overflow-y: auto;
     background-color: var(--background-color-main);
     background-image: url(https://cdn.prod.website-files.com/6674f0cdb5b7b401612cf015/6674f0cdb5b7b401612cf065_noise-50.png);
-
 }
 
 .spacer-element {
@@ -114,7 +124,7 @@ body {
 .auth-heading {
     text-align: center;
     font-size: 3.5rem;
-    font-family: "Comfortaa",monospace;
+    font-family: "Comfortaa", monospace;
     color: var(--text-color);
     margin-bottom: 2rem;
 }
@@ -137,7 +147,7 @@ body {
 .auth-logout-container {
     margin-top: 25px;
     font-size: 1.5rem;
-    font-family: "Comfortaa",monospace;
+    font-family: "Comfortaa", monospace;
     color: grey;
     border: rgb(255, 255, 255) solid 3px;
     background-color: var(--background-color-dark);
@@ -160,7 +170,7 @@ body {
 }
 
 .auth-form-group {
-    font-family: "Comfortaa",monospace;
+    font-family: "Comfortaa", monospace;
     color: var(--text-color);
     margin-top: 1rem;
 }
@@ -193,12 +203,12 @@ body {
     background-color: var(--text-color);
     border-radius: 4px;
     border-width: 0;
-    box-shadow: rgba(201, 192, 219, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+    box-shadow: rgba(201, 192, 219, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
     box-sizing: border-box;
     color: black;
     cursor: pointer;
     display: inline-flex;
-    font-family: "Comfortaa",monospace;
+    font-family: "Comfortaa", monospace;
     height: 48px;
     justify-content: center;
     line-height: 1;
@@ -210,12 +220,12 @@ body {
     position: relative;
     text-align: left;
     text-decoration: none;
-    transition: box-shadow .15s,transform .15s;
+    transition: box-shadow .15s, transform .15s;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
     white-space: nowrap;
-    will-change: box-shadow,transform;
+    will-change: box-shadow, transform;
     font-size: 2rem;
     align-items: center;
 }
@@ -240,9 +250,10 @@ body {
 
 .section-heading {
     color: var(--text-color);
-    font-size: 2.3rem;
+    font-size: 3rem;
     text-align: center;
     margin-bottom: 3rem;
+    margin-top: 3rem;
 }
 
 .path-card-container {
@@ -254,7 +265,7 @@ body {
 
 .path-card-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 path cards per row */
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     width: 100%;
     max-width: 1400px;
@@ -309,12 +320,12 @@ body {
     padding: 0;
     margin: 0;
     list-style: none;
-    font-family: "Comfortaa",monospace;
+    font-family: "Comfortaa", monospace;
 }
 
 .modules-container ul li {
     background-color: var(--background-color-dark);
-    color: var (--text-color); 
+    color: var(--text-color);
     padding: 0.5rem;
 }
 
@@ -336,14 +347,14 @@ body {
 
 .module-heading {
     color: var(--text-color);
-    font-size: 2.2rem; 
+    font-size: 2.2rem;
     text-align: center;
     margin-bottom: 3rem;
 }
 
 .lessons-card-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 lesson cards per row */
+    grid-template-columns: repeat(4, 1fr);
     gap: 2.5rem;
     width: 100%;
     margin: 0 auto;
@@ -353,15 +364,18 @@ body {
     position: relative;
     background-color: var(--background-color-dark);
     border: rgba(255, 135, 27, 0.8) solid 4px;
-    border-radius: 10px;
+    border-radius: 15px;
     padding: 1.5rem;
     text-align: center;
     font-family: "Comfortaa", monospace;
     color: var(--text-color);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
     transition: box-shadow 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
-
 
 .lesson-description {
     margin-bottom: 22rem;
@@ -375,7 +389,7 @@ body {
 .lesson-card h3 {
     font-size: 1.5rem;
     margin-bottom: 0.75rem;
-    color: var(--accent-color-2);
+    color: var(--accent-color-1);
 }
 
 .lesson-card p {
@@ -388,6 +402,7 @@ body {
     padding: 0;
     margin: 0;
     text-align: left;
+    margin-top: auto;
 }
 
 .lesson-details li {
@@ -411,7 +426,6 @@ body {
 
 .lesson-card.completed:hover {
     border: rgba(152, 175, 131, 1) solid 4px;
-
 }
 
 .lesson-completed-icon {
@@ -420,4 +434,12 @@ body {
     right: 15px;
     color: var(--accent-color-2);
     font-size: 2rem;
+}
+
+.lesson-card.completed .lesson-details li strong {
+    color: var(--accent-color-2);
+}
+
+.lesson-card.completed h3 {
+    color: var(--accent-color-2);
 }
