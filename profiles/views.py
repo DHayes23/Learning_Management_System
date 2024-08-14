@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Profile
+from .models import Profile, Module
 
 def profile(request):
     user_profile = request.user.profile
@@ -14,6 +14,10 @@ def profile(request):
     paths_with_completion_status = []
     for path in assigned_paths:
         path.is_completed = path in completed_paths
+        path.modules_with_completion_status = []
+        for module in path.modules.all():
+            module.is_completed = module.is_completed_by_student(request.user)
+            path.modules_with_completion_status.append(module)
         paths_with_completion_status.append(path)
 
     context = {
