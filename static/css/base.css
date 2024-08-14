@@ -40,7 +40,7 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     padding-top: 1rem;
-    border-right: 1px solid var(--text-color);
+    border-right: 2px solid var(--text-color);
 }
 
 .navbar-brand {
@@ -350,9 +350,10 @@ body {
 }
 
 .lesson-card {
+    position: relative;
     background-color: var(--background-color-dark);
     border: rgba(255, 135, 27, 0.8) solid 4px;
-    border-radius: 15px;
+    border-radius: 10px;
     padding: 1.5rem;
     text-align: center;
     font-family: "Comfortaa", monospace;
@@ -401,4 +402,22 @@ body {
 
 .lesson-card:hover {
     border: rgba(255, 135, 27, 1) solid 4px;
+    cursor: pointer;
+}
+
+.lesson-card.completed {
+    border: rgba(152, 175, 131, 0.8) solid 4px;
+}
+
+.lesson-card.completed:hover {
+    border: rgba(152, 175, 131, 1) solid 4px;
+
+}
+
+.lesson-completed-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: var(--accent-color-2);
+    font-size: 2rem;
 }

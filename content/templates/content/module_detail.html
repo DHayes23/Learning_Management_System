@@ -5,10 +5,14 @@
     <h1 class="module-heading">{{ module.name }}</h1>
     <h2 class="lesson-description">{{ module.description }}</h2>
 
-    <!-- <h2 class="section-heading">Lessons in this Module</h2> -->
     <div class="lessons-card-grid">
         {% for lesson in lessons %}
-            <div class="lesson-card">
+            <div class="lesson-card {% if lesson.is_completed %}completed{% endif %}">
+                {% if lesson.is_completed %}
+                    <div class="lesson-completed-icon">
+                        <i class="fa-sharp fa-light fa-circle-check"></i>
+                    </div>
+                {% endif %}
                 <h3>{{ lesson.name }}</h3>
                 <p class="lesson-description">{{ lesson.description }}</p>
                 <ul class="lesson-details">
