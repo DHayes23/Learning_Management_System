@@ -87,6 +87,15 @@ body {
     color: var(--accent-color-1);
 }
 
+.logout-icon, .logout-link {
+    color: red;
+}
+
+.logout-link .logout-icon, 
+.logout-link:hover {
+    color: red;
+}
+
 /* Main Content Area Styling */
 .content-area {
     flex-grow: 1;
