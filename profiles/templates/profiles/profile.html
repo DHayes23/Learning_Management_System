@@ -6,14 +6,26 @@
         <h2 class="section-heading" id="assigned-paths-heading">Assigned Paths</h2>
         <div class="path-card-grid">
             {% for path in assigned_paths %}
-                <div class="path-card" id="card-{{ path.id }}" style="position: relative;">
+                <div class="path-card {% if path.is_completed %}completed{% endif %}" id="card-{{ path.id }}" style="position: relative;">
                     <h3 id="title-{{ path.id }}">{{ path.name }}</h3>
+                    {% if path.is_completed %}
+                    <i class="fa-sharp fa-light fa-check-circle path-completed-icon"></i>
+                    {% endif %}
                     <p>{{ path.description }}</p>
                     <a href="javascript:void(0);" class="primary-button view-modules-button" onclick="toggleModules({{ path.id }});" id="button-{{ path.id }}" style="width: 75%; display: inline-block;">View Modules</a>
                     <div id="modules-{{ path.id }}" class="modules-container" style="display: none; max-height: 500px; overflow-y: auto; position: relative; top: 20px; left: 0; right: 0;">
                         <ul style="margin-top: 25px;">
                             {% for module in path.modules.all %}
-                                <li><a href="{% url 'module_detail' module.id %}">{{ module.name }}</a></li>
+                            <li>
+                                <a href="{% url 'module_detail' module.id %}">{{ module.name }}</a>
+                                <p>
+                                    {% if module.description %}
+                                        {{ module.description }}
+                                    {% else %}
+                                        This module does not have a description.
+                                    {% endif %}
+                                </p>
+                            </li>                            
                             {% endfor %}
                         </ul>
                     </div>
@@ -156,7 +168,7 @@
                     onStart: function() {
                         gsap.fromTo(modulesContainer.querySelectorAll('li'), 
                             { opacity: 0, y: "-50px" },  
-                            { duration: 1, opacity: 1, y: "0px", stagger: { each: 0.15, from: "start" }, ease: "power1.out" }
+                            { duration: 1.5, opacity: 1, y: "0px", stagger: { each: 0.25, from: "start" }, ease: "power1.out" }
                         );
                         modulesContainer.classList.add('show');
                     }

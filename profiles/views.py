@@ -10,8 +10,14 @@ def profile(request):
     # Get completed paths for all roles
     completed_paths = user_profile.get_completed_paths()
 
+    # Add a flag to each path indicating if it's completed
+    paths_with_completion_status = []
+    for path in assigned_paths:
+        path.is_completed = path in completed_paths
+        paths_with_completion_status.append(path)
+
     context = {
-        'assigned_paths': assigned_paths,
+        'assigned_paths': paths_with_completion_status,
         'completed_paths': completed_paths,
         'user_role': user_profile.role,
     }
