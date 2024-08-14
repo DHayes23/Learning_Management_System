@@ -85,6 +85,11 @@ body {
     margin-right: 1rem;
 }
 
+.back-icon {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
+
 .nav-link:hover {
     color: var(--accent-color-1);
 }
