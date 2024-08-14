@@ -11,6 +11,7 @@ html, body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    border-top: 1px solid var(--text-color);
 }
 
 body {
@@ -28,6 +29,7 @@ body {
     display: flex;
     padding: 0;
     margin: 0;
+    
 }
 
 /* Vertical Navbar Styling */
@@ -38,6 +40,7 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     padding-top: 1rem;
+    border-right: 1px solid var(--text-color);
 }
 
 .navbar-brand {
@@ -79,6 +82,8 @@ body {
     padding: 2rem;
     overflow-y: auto;
     background-color: var(--background-color-main);
+    background-image: url(https://cdn.prod.website-files.com/6674f0cdb5b7b401612cf015/6674f0cdb5b7b401612cf065_noise-50.png);
+
 }
 
 .spacer-element {
@@ -345,16 +350,17 @@ body {
 }
 
 .lesson-card {
-    background-color: var (--background-color-dark);
-    border: var(--accent-color-1) solid 3px;
+    background-color: var(--background-color-dark);
+    border: rgba(255, 135, 27, 0.8) solid 4px;
     border-radius: 15px;
     padding: 1.5rem;
     text-align: center;
     font-family: "Comfortaa", monospace;
-    color: var (--text-color);
+    color: var(--text-color);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
     transition: box-shadow 0.3s ease-in-out;
 }
+
 
 .lesson-description {
     margin-bottom: 22rem;
@@ -386,6 +392,7 @@ body {
 .lesson-details li {
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
+    color: var(--text-color);
 }
 
 .lesson-details li strong {
@@ -393,6 +400,5 @@ body {
 }
 
 .lesson-card:hover {
-    transform: none;
-    box-shadow: none;
+    border: rgba(255, 135, 27, 1) solid 4px;
 }
