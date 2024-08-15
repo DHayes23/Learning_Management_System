@@ -384,6 +384,12 @@ body {
     color: var(--accent-color-1);
 }
 
+.module-counter{
+    color: var(--text-color);
+    text-decoration: none;
+    margin-left: 1rem;
+}
+
 .modules-container ul li p {
     margin-top: 1rem;
 }

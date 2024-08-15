@@ -13,17 +13,17 @@
                     {% endif %}
                     <p>{{ path.description }}</p>
                     <a href="javascript:void(0);" class="primary-button view-modules-button" onclick="toggleModules({{ path.id }});" id="button-{{ path.id }}" style="width: 75%; display: inline-block;">View Modules</a>
-                    <div id="modules-{{ path.id }}" class="modules-container" style="display: none; max-height: 500px; overflow-y: auto; position: relative; top: 20px; left: 0; right: 0;">
-                        <ul style="margin-top: 25px;">
+                    <div id="modules-{{ path.id }}" class="modules-container" style="display: none; max-height: 550px; overflow-y: auto; position: relative; top: 20px; left: 0; right: 0;">
+                        <ul style="margin-top: 50px;">
                             {% for module in path.modules_with_completion_status %}
                             <li>
                                 <a href="{% url 'module_detail' module.id %}" 
                                    style="{% if module.is_completed %}color: var(--accent-color-2); text-decoration: none;{% endif %}">
                                    {% if module.is_completed %}
                                    <i class="fa fa-light fa-check-circle" style="color: var(--accent-color-2); margin-right: 8px;"></i>
-                                   {% endif %}
-                                   {{ module.name }}
+                                   {% endif %}{{ module.name }}
                                 </a>
+                                <span class="module-counter">({{ module.completed_lessons }}/{{ module.total_lessons }})</span>
                                 <p>
                                     {% if module.description %}
                                         {{ module.description }}

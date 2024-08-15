@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Profile, Module
+from .models import Profile, Module, StudentProgress
 
 def profile(request):
     user_profile = request.user.profile
@@ -17,6 +17,13 @@ def profile(request):
         path.modules_with_completion_status = []
         for module in path.modules.all():
             module.is_completed = module.is_completed_by_student(request.user)
+            module.total_lessons = module.lessons.count()
+            # Calculate completed lessons for the current module
+            module.completed_lessons = StudentProgress.objects.filter(
+                student=request.user,
+                lesson__in=module.lessons.all(),
+                completed=True
+            ).count()
             path.modules_with_completion_status.append(module)
         paths_with_completion_status.append(path)
 
