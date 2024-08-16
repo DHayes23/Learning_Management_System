@@ -6,20 +6,40 @@
         <h2 class="section-heading" id="assigned-paths-heading">Assigned Paths</h2>
         <div class="path-card-grid">
             {% for path in assigned_paths %}
-                <div class="path-card" id="card-{{ path.id }}" style="position: relative;">
+                <div class="path-card {% if path.is_completed %}completed{% endif %}" id="card-{{ path.id }}" style="position: relative;">
                     <h3 id="title-{{ path.id }}">{{ path.name }}</h3>
+                    {% if path.is_completed %}
+                    <i class="fa-sharp fa-light fa-check-circle path-completed-icon"></i>
+                    {% endif %}
                     <p>{{ path.description }}</p>
                     <a href="javascript:void(0);" class="primary-button view-modules-button" onclick="toggleModules({{ path.id }});" id="button-{{ path.id }}" style="width: 75%; display: inline-block;">View Modules</a>
-                    <div id="modules-{{ path.id }}" class="modules-container" style="display: none; max-height: 450px; overflow-y: auto; position: relative; top: 20px; left: 0; right: 0;">
-                        <ul style="margin-top: 25px;">
-                            {% for module in path.modules.all %}
-                                <li><a href="{% url 'module_detail' module.id %}">{{ module.name }}</a></li>
+                    <div id="modules-{{ path.id }}" class="modules-container" style="display: none; max-height: 550px; overflow-y: auto; position: relative; top: 20px; left: 0; right: 0;">
+                        <ul style="margin-top: 50px;">
+                            {% for module in path.modules_with_completion_status %}
+                            <li>
+                                <a href="{% url 'module_detail' module.id %}" 
+                                   style="{% if module.is_completed %}color: var(--accent-color-2); text-decoration: none;{% endif %}">
+                                   {% if module.is_completed %}
+                                   <i class="fa fa-light fa-check-circle" style="color: var(--accent-color-2); margin-right: 8px;"></i>
+                                   {% endif %}{{ module.name }}
+                                </a>
+                                <span class="module-counter">({{ module.completed_lessons }}/{{ module.total_lessons }})</span>
+                                <p>
+                                    {% if module.description %}
+                                        {{ module.description }}
+                                    {% else %}
+                                        This module does not have a description.
+                                    {% endif %}
+                                </p>
+                            </li>                            
                             {% endfor %}
                         </ul>
                     </div>
                 </div>
             {% endfor %}
         </div>
+    {% else %}
+        <h3 class="section-header">No paths assigned.</h3>
     {% endif %}
 </div>
 
@@ -29,19 +49,58 @@
     function toggleModules(pathId) {
         var modulesContainer = document.getElementById('modules-' + pathId);
         var selectedCard = document.getElementById('card-' + pathId);
+        var titleElement = document.getElementById('title-' + pathId);
         var viewModulesButton = document.getElementById('button-' + pathId);
         var allCards = document.querySelectorAll('.path-card');
         var gridContainer = document.querySelector('.path-card-grid');
         var heading = document.getElementById('assigned-paths-heading');
         var body = document.body;
+        var contentArea = document.querySelector('.content-area');
         var isSelected = modulesContainer.classList.contains('show');
 
-        // Disable the button during animations
         viewModulesButton.style.pointerEvents = 'none';
         viewModulesButton.style.opacity = '0.6';
 
         if (isSelected) {
-            gsap.to(viewModulesButton, {
+            var tlClose = gsap.timeline({
+                onComplete: function () {
+                    gsap.to(selectedCard, {
+                        duration: 1.5,
+                        width: selectedCard.dataset.originalWidth,
+                        height: selectedCard.dataset.originalHeight,
+                        padding: "1.5rem 1.5rem 2rem 1.5rem",
+                        left: selectedCard.dataset.originalLeft,
+                        top: selectedCard.dataset.originalTop,
+                        onComplete: function () {
+                            gsap.set(selectedCard, { position: '', clearProps: 'all' });
+                            gridContainer.style.width = '';
+                            gridContainer.style.height = '';
+                            gridContainer.style.gridTemplateColumns = '';
+                            gsap.to(allCards, { duration: 0.5, opacity: 1, transform: "translate(0, 0)", clearProps: 'all' });
+                            gsap.to(heading, { duration: 0.5, y: "0px", opacity: 1 });
+                            viewModulesButton.style.pointerEvents = 'auto';
+                            viewModulesButton.style.opacity = '';
+                        }
+                    });
+                }
+            });
+
+            tlClose.to(modulesContainer.querySelectorAll('li'), {
+                duration: 0.5,
+                opacity: 0,
+                y: "-20px",
+                stagger: { each: 0.1, from: "end" },
+                onComplete: function () {
+                    modulesContainer.style.display = 'none';
+                    modulesContainer.classList.remove('show');
+                }
+            }).to(titleElement, {
+                duration: 0.5,
+                fontSize: "1.5rem",
+                ease: "power1.out",
+            }, "-=0.3");
+
+            tlClose.to(viewModulesButton, {
                 duration: 0.5,
                 width: "auto", 
                 onComplete: function () {
@@ -49,47 +108,7 @@
                 }
             });
 
-            gsap.to(modulesContainer.querySelectorAll('li'), {
-                duration: 0.5,
-                opacity: 0,
-                y: "-20px",
-                stagger: { each: 0.1, from: "end" },
-                onComplete: function () {
-                    modulesContainer.style.display = 'none';
-
-                    gsap.to(selectedCard, {
-                        duration: 1,
-                        width: selectedCard.dataset.originalWidth,
-                        height: selectedCard.dataset.originalHeight,
-                        padding: "1.5rem 1.5rem 2rem 1.5rem",
-                        onComplete: function () {
-                            gsap.to(selectedCard, {
-                                duration: 1.5,
-                                left: selectedCard.dataset.originalLeft,
-                                top: selectedCard.dataset.originalTop,
-                                onComplete: function () {
-                                    gsap.set(selectedCard, { position: '', clearProps: 'all' });
-                                    gridContainer.style.width = '';
-                                    gridContainer.style.height = '';
-                                    gridContainer.style.gridTemplateColumns = '';
-
-                                    gsap.to(allCards, { duration: 0.5, opacity: 1, transform: "translate(0, 0)", clearProps: 'all' });
-
-                                    gsap.to(heading, { duration: 0.5, y: "0px", opacity: 1 });
-
-                                    // Enable the button after all animations are finished
-                                    viewModulesButton.style.pointerEvents = 'auto';
-                                    viewModulesButton.style.opacity = '';
-                                }
-                            });
-                        }
-                    });
-
-                    modulesContainer.classList.remove('show');
-                    body.style.overflow = ''; 
-                }
-            });
-
+            body.style.overflow = ''; 
         } else {
             gsap.to(heading, { duration: 0.5, y: "-100px", opacity: 0 });
 
@@ -109,19 +128,20 @@
                 });
 
                 var cardRect = selectedCard.getBoundingClientRect();
+                var contentRect = contentArea.getBoundingClientRect();
 
                 selectedCard.dataset.originalLeft = cardRect.left + 'px';
                 selectedCard.dataset.originalTop = cardRect.top + 'px';
                 selectedCard.dataset.originalWidth = cardRect.width + 'px';
                 selectedCard.dataset.originalHeight = cardRect.height + 'px';
 
-                var screenCenterX = window.innerWidth / 2;
-                var screenCenterY = window.innerHeight / 2;
+                var contentCenterX = contentRect.left + contentRect.width / 2;
+                var contentCenterY = contentRect.top + contentRect.height / 2;
 
                 var newWidth = cardRect.width * 2;
-                var newHeight = window.innerHeight * 0.8;
-                var newLeft = screenCenterX - newWidth / 2;
-                var newTop = screenCenterY - newHeight / 2;
+                var newHeight = window.innerHeight * 0.9;
+                var newLeft = contentCenterX - newWidth / 2;
+                var newTop = contentCenterY - newHeight / 2 - 50;
 
                 selectedCard.dataset.centerLeft = newLeft + 'px';
                 selectedCard.dataset.centerTop = newTop + 'px';
@@ -134,35 +154,41 @@
                     duration: 0.5,
                     width: "auto", 
                     onComplete: function () {
-                        viewModulesButton.innerHTML = '<i class="fas fa-arrow-left"></i> Back';
+                        viewModulesButton.innerHTML = '<i class="back-icon fa-sharp fa-arrow-left"></i>Back';
                     }
                 });
 
-                gsap.to(selectedCard, {
-                    duration: 1.5,
+                var tlOpen = gsap.timeline();
+
+                tlOpen.to(selectedCard, {
+                    duration: 1,
+                    width: newWidth,
+                    height: newHeight,
                     left: newLeft,
                     top: newTop,
-                    ease: "power2.out",
-                    onComplete: function () {
-                        gsap.to(selectedCard, {
-                            duration: 1,
-                            width: newWidth,
-                            height: newHeight,
-                            padding: "2rem",
-                            onComplete: function () {
-                                modulesContainer.style.display = 'block';
-                                gsap.fromTo(modulesContainer.querySelectorAll('li'), 
-                                    { opacity: 0, y: "-50px" },  
-                                    { duration: 1, opacity: 1, y: "0px", stagger: { each: 0.15, from: "start" }, ease: "power1.out" }
-                                );
-                                modulesContainer.classList.add('show');
+                    padding: "2rem",
+                });
 
-                                // Enable the button after all animations have finished
-                                viewModulesButton.style.pointerEvents = 'auto';
-                                viewModulesButton.style.opacity = ''; 
-                            }
-                        });
+                tlOpen.to(modulesContainer, {
+                    display: 'block',
+                    onStart: function() {
+                        gsap.fromTo(modulesContainer.querySelectorAll('li'), 
+                            { opacity: 0, y: "-50px" },  
+                            { duration: 1.5, opacity: 1, y: "0px", stagger: { each: 0.25, from: "start" }, ease: "power1.out" }
+                        );
+                        modulesContainer.classList.add('show');
                     }
+                }, "-=0.5");
+
+                tlOpen.to(titleElement, {
+                    duration: 0.5,
+                    fontSize: "2.5rem",
+                    ease: "power1.out",
+                }, "-=0.5");
+
+                tlOpen.call(function() {
+                    viewModulesButton.style.pointerEvents = 'auto';
+                    viewModulesButton.style.opacity = '';
                 });
 
             }, 100);

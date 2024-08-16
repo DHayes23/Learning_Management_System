@@ -6,64 +6,114 @@
     --background-color-dark: #1c2021;
 }
 
-html {
+html, body {
     height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border-top: 1px solid var(--text-color);
 }
 
 body {
     background-color: var(--background-color-main);
     background-size: cover;
-    scrollbar-color: var(--background-color-dark);
-    scrollbar-width: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Navbar Styling */
-.navbar {
-    background-color: var(--background-color-dark); 
-    background-size: cover;
+/* Container for navbar and main content */
+.container-fluid.d-flex {
+    height: 100vh;
+    display: flex;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* Vertical Navbar Styling */
+#main-navbar {
+    width: 285px;
+    max-width: 285px;
+    min-width: 285px;
+    background-color: var(--background-color-dark);
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 1rem;
+    border-right: 2px solid var(--text-color);
+}
+
+.nav-divider {
+    height: 3rem;
 }
 
 .navbar-brand {
-    font-family: "Comfortaa",monospace;
+    font-family: "Comfortaa", monospace;
     color: var(--accent-color-2);
-    font-size: 2.3rem;
-    margin-left: 2rem;
+    font-size: 1.5rem;
+    padding-left: 1rem;
     font-weight: bold;
+    text-align: left;
+    line-height: 1.2;
+}
+
+.navbar-brand .brand-text {
+    display: block;
 }
 
 .navbar-brand:hover {
     color: var(--accent-color-2);
 }
 
-.navbar-brand:visited {
-    color: var(--accent-color-2);
+.navbar-nav .nav-item {
+    margin-bottom: 1rem;
 }
 
 .nav-link {
-    font-family: "Comfortaa",monospace;
+    font-family: "Comfortaa", monospace;
     color: var(--text-color);
     font-size: 1.3rem;
     font-weight: bold;
+    padding-left: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+.fa-solid, .fa-sharp {
+    font-size: 1.5rem;
+    vertical-align: middle;
+    margin-right: 1rem;
+}
+
+.back-icon {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
 }
 
 .nav-link:hover {
     color: var(--accent-color-1);
 }
 
-.nav-link:last-of-type {
-    margin-right: 2rem;
+.logout-icon, .logout-link {
+    color: red;
 }
 
-#logout-form {
-    display: none;
+.logout-link .logout-icon, 
+.logout-link:hover {
+    color: red;
+}
+
+/* Main Content Area Styling */
+.content-area {
+    flex-grow: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    background-color: var(--background-color-main);
+    background-image: url(https://cdn.prod.website-files.com/6674f0cdb5b7b401612cf015/6674f0cdb5b7b401612cf065_noise-50.png);
 }
 
 .spacer-element {
-    margin-top: 7rem;
-}
-
-.test-header {
-    color: var(--accent-color-2);
+    display: none;
 }
 
 /* Scrollbar Styling for WebKit browsers (Chrome, Safari, Edge) */
@@ -81,14 +131,19 @@ body {
     border: 2px solid var(--accent-color-1);
 }
 
-/* Authentication Form Styling */
+/* Additional styles for other elements */
+.test-header {
+    color: var(--accent-color-2);
+}
 
+/* Authentication Form Styling */
 .auth-heading {
     text-align: center;
     font-size: 3.5rem;
-    font-family: "Comfortaa",monospace;
+    font-family: "Comfortaa", monospace;
     color: var(--text-color);
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
+    margin-top: 20%;
 }
 
 .auth-container {
@@ -109,7 +164,7 @@ body {
 .auth-logout-container {
     margin-top: 25px;
     font-size: 1.5rem;
-    font-family: "Comfortaa",monospace;
+    font-family: "Comfortaa", monospace;
     color: grey;
     border: rgb(255, 255, 255) solid 3px;
     background-color: var(--background-color-dark);
@@ -132,7 +187,7 @@ body {
 }
 
 .auth-form-group {
-    font-family: "Comfortaa",monospace;
+    font-family: "Comfortaa", monospace;
     color: var(--text-color);
     margin-top: 1rem;
 }
@@ -165,12 +220,12 @@ body {
     background-color: var(--text-color);
     border-radius: 4px;
     border-width: 0;
-    box-shadow: rgba(201, 192, 219, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+    box-shadow: rgba(201, 192, 219, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
     box-sizing: border-box;
     color: black;
     cursor: pointer;
     display: inline-flex;
-    font-family: "Comfortaa",monospace;
+    font-family: "Comfortaa", monospace;
     height: 48px;
     justify-content: center;
     line-height: 1;
@@ -182,12 +237,12 @@ body {
     position: relative;
     text-align: left;
     text-decoration: none;
-    transition: box-shadow .15s,transform .15s;
+    transition: box-shadow .15s, transform .15s;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
     white-space: nowrap;
-    will-change: box-shadow,transform;
+    will-change: box-shadow, transform;
     font-size: 2rem;
     align-items: center;
 }
@@ -212,9 +267,10 @@ body {
 
 .section-heading {
     color: var(--text-color);
-    font-size: 2.3rem;
+    font-size: 3rem;
     text-align: center;
     margin-bottom: 3rem;
+    margin-top: 3rem;
 }
 
 .path-card-container {
@@ -226,7 +282,7 @@ body {
 
 .path-card-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 path cards per row */
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     width: 100%;
     max-width: 1400px;
@@ -235,7 +291,7 @@ body {
 
 .path-card {
     background-color: var(--background-color-dark);
-    border: var(--accent-color-1) solid 3px;
+    border: rgba(255, 135, 27, 0.8) solid 4px;
     border-radius: 15px;
     padding: 1.5rem;
     padding-bottom: 2rem;
@@ -247,15 +303,43 @@ body {
     margin-top: 2rem;
 }
 
+.path-card:hover {
+    border: rgba(255, 135, 27, 1) solid 4px;
+}
+
+.path-card.completed {
+    border: rgba(152, 175, 131, 0.8) solid 4px;
+}
+
+.path-card.completed:hover {
+    border: rgba(152, 175, 131, 1) solid 4px;
+}
+
+
+
 .path-card h3 {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
+    color: var(--accent-color-1);
+}
+
+.path-card.completed h3 {
     color: var(--accent-color-2);
+}
+
+.path-completed-icon {
+    color: var(--accent-color-2);
+    vertical-align: middle;
+    font-size: 2rem;
+    margin: 0;
+    margin-top: -0.5rem;
+    margin-bottom: 0.75rem;
+
 }
 
 .path-card p {
     font-size: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .path-card a {
@@ -271,22 +355,23 @@ body {
 
 /* Module Display Animations */
 .modules-container {
-    margin-top: 0.5rem;
-    max-height: 300px;
+    margin-top: -2rem;
+    max-height: 1000px;
     overflow-y: auto;
     transition: max-height 0.3s ease-in-out;
+    text-align: left;
 }
 
 .modules-container ul {
     padding: 0;
     margin: 0;
     list-style: none;
-    font-family: "Comfortaa",monospace;
+    font-family: "Comfortaa", monospace;
 }
 
 .modules-container ul li {
     background-color: var(--background-color-dark);
-    color: var(--text-color); 
+    color: var(--text-color);
     padding: 0.5rem;
 }
 
@@ -296,7 +381,18 @@ body {
 
 .modules-container ul li a {
     border-bottom: none;
+    margin-bottom: 5rem;
+    color: var(--accent-color-1);
+}
+
+.module-counter{
     color: var(--text-color);
+    text-decoration: none;
+    margin-left: 1rem;
+}
+
+.modules-container ul li p {
+    margin-top: 1rem;
 }
 
 /* Module Detail Page Styling */
@@ -308,22 +404,23 @@ body {
 
 .module-heading {
     color: var(--text-color);
-    font-size: 2.2rem; 
+    font-size: 2.2rem;
     text-align: center;
     margin-bottom: 3rem;
 }
 
 .lessons-card-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 lesson cards per row */
+    grid-template-columns: repeat(4, 1fr);
     gap: 2.5rem;
     width: 100%;
     margin: 0 auto;
 }
 
 .lesson-card {
+    position: relative;
     background-color: var(--background-color-dark);
-    border: var(--accent-color-1) solid 3px;
+    border: rgba(255, 135, 27, 0.8) solid 4px;
     border-radius: 15px;
     padding: 1.5rem;
     text-align: center;
@@ -331,6 +428,10 @@ body {
     color: var(--text-color);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
     transition: box-shadow 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 .lesson-description {
@@ -345,7 +446,7 @@ body {
 .lesson-card h3 {
     font-size: 1.5rem;
     margin-bottom: 0.75rem;
-    color: var(--accent-color-2);
+    color: var(--accent-color-1);
 }
 
 .lesson-card p {
@@ -358,11 +459,13 @@ body {
     padding: 0;
     margin: 0;
     text-align: left;
+    margin-top: auto;
 }
 
 .lesson-details li {
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
+    color: var(--text-color);
 }
 
 .lesson-details li strong {
@@ -370,6 +473,34 @@ body {
 }
 
 .lesson-card:hover {
-    transform: none;
-    box-shadow: none;
+    border: rgba(255, 135, 27, 1) solid 4px;
+    cursor: pointer;
+}
+
+.lesson-card.completed {
+    border: rgba(152, 175, 131, 0.8) solid 4px;
+}
+
+.lesson-card.completed:hover {
+    border: rgba(152, 175, 131, 1) solid 4px;
+}
+
+.lesson-completed-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: var(--accent-color-2);
+    font-size: 2rem;
+}
+
+.lesson-completed-icon i {
+    font-size: 2rem;
+}
+
+.lesson-card.completed .lesson-details li strong {
+    color: var(--accent-color-2);
+}
+
+.lesson-card.completed h3 {
+    color: var(--accent-color-2);
 }
