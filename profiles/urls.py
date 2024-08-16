@@ -4,4 +4,5 @@ from .decorators import role_required
 
 urlpatterns = [
     path('profile/', role_required(['student', 'trainer', 'manager'])(views.profile), name='profile'),
+    path('dashboard/', role_required(['student', 'trainer', 'manager'])(views.dashboard), name='dashboard'),
 ]

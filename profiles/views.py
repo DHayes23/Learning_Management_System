@@ -34,3 +34,17 @@ def profile(request):
     }
 
     return render(request, 'profiles/profile.html', context)
+
+def dashboard(request):
+    user_profile = request.user.profile
+
+    assigned_paths = user_profile.assigned_paths.all()
+    completed_paths = user_profile.get_completed_paths()
+    
+    context = {
+        'assigned_paths': assigned_paths,
+        'completed_paths': completed_paths,
+        'user_role': user_profile.role,
+    }
+
+    return render(request, 'profiles/dashboard.html', context)
