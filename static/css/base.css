@@ -560,6 +560,8 @@ body {
     background-color: var(--background-color-dark);
     color: var(--accent-color-1);
     font-weight: bold;
+    font-size: 4rem;
+    text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
     border-radius: 30px;
     padding: 1rem;
     text-align: center;
