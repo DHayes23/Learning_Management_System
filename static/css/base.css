@@ -510,14 +510,26 @@ body {
 
 /* Dashboard Styling */
 
+.dashboard-content-area {
+    flex-grow: 1;
+    padding: 1rem;
+    overflow: hidden;
+    background-color: var(--background-color-main);
+    background-image: url(https://cdn.prod.website-files.com/6674f0cdb5b7b401612cf015/6674f0cdb5b7b401612cf065_noise-50.png);
+    background-size: auto;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
 .dashboard-container {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     color: var(--text-color);
     font-size: 3rem;
+    margin-bottom: 0;
 }
 
 .dashboard-area-1 {
@@ -534,6 +546,7 @@ body {
     background-image: url("/static/media/images/Texture3.png");
     background-size: 20px;
     background-position: center;
+    box-shadow: rgba(14, 14, 14, 0.6) -5px 0px 35px -3px;
 }
 
 .dashboard-cards {
@@ -611,6 +624,7 @@ body {
     background-image: url("/static/media/images/Texture7.png");
     background-size: 60px;
     background-position: top;
+    box-shadow: rgba(14, 14, 14, 0.6) 5px 0px 35px -3px;
 }
 
 .dashboard-area-3 { 
@@ -623,6 +637,8 @@ body {
     background-image: url("/static/media/images/Texture7.png");
     background-size: 60px;
     background-position: center;
+    box-shadow: rgba(14, 14, 14, 0.6) -5px 5px 35px -3px;
+
 }
 
 .dashboard-area-4 {
@@ -636,4 +652,5 @@ body {
     background-image: url("/static/media/images/Texture5.png");
     background-size: 350px;
     background-position: center;
+    box-shadow: rgba(14, 14, 14, 0.6) 5px 5px 35px -3px;
 }
