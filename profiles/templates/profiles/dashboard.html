@@ -9,15 +9,21 @@
             <div class="dashboard-cards">
                 <div class="dashboard-card">
                     {{ completed_paths_count }}
-                    <p class="card-text-below">Paths Completed</p>
+                    <p class="card-text-above">
+                        Path{% if completed_paths_count != 1 %}s{% endif %} Completed
+                    </p>
                 </div>
                 <div class="dashboard-card">
-                    <p class="card-text-below">Modules Completed</p>
+                    <p class="card-text-above">
+                        Module{% if completed_modules_count != 1 %}s{% endif %} Completed
+                    </p>
                     {{ completed_modules_count }}
                 </div>
                 <div class="dashboard-card">
                     {{ completed_lessons_count }}
-                    <p class="card-text-below">Lessons Completed</p>
+                    <p class="card-text-above">
+                        Lesson{% if completed_lessons_count != 1 %}s{% endif %} Completed
+                    </p>
                 </div>
             </div>
         </div>

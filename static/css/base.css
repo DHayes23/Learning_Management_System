@@ -591,12 +591,8 @@ body {
 .dashboard-card:nth-child(1),
 .dashboard-card:nth-child(2),
 .dashboard-card:nth-child(3) {
-    transform: translateY(15px);
-}
-
-/* .dashboard-card:nth-child(2) {
     transform: translateY(-15px);
-} */
+}
 
 .card-text-below, .card-text-above {
     position: absolute;
