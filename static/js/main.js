@@ -10,6 +10,9 @@ function renderCompletionChart(completedPaths, incompletePaths, completedModules
         incompleteLessons
     ];
 
+    // Track the active segment
+    var activeIndex = null;
+
     var completionChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -73,9 +76,33 @@ function renderCompletionChart(completedPaths, incompletePaths, completedModules
                         chart.update();
                     }
                 },
-                                tooltip: {
+                tooltip: {
                     enabled: false  // Disable tooltips to prevent clipping
+                },
+                datalabels: {
+                    color: '#e2d0c5',
+                    font: {
+                        weight: 'bold',
+                        family: 'Arial',
+                        size: 18,
+                    },
+                    display: function(context) {
+                        // Only display the label if the current segment is acctive
+                        return context.dataIndex === activeIndex;
+                    },
+                    formatter: function(value) {
+                        return value;  // Display the value (number of paths, modules or lessons) inside the segment
+                    },
                 }
+            },
+            onHover: function(event, chartElement) {
+                if (chartElement.length) {
+                    activeIndex = chartElement[0].index;
+                } else {
+                    activeIndex = null;
+                }
+                completionChart.update();
+                event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
             },
             onClick: function(evt, activeElements) {
                 const activeElement = activeElements[0];
@@ -94,11 +121,9 @@ function renderCompletionChart(completedPaths, incompletePaths, completedModules
                     // Redraw the chart
                     this.update();
                 }
-            },
-            onHover: function(event, chartElement) {
-                event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
             }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 }
 
