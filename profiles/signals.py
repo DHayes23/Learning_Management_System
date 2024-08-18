@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from content.models import Path, Module, Lesson, StudentProgress
 from .models import Profile
+from django.db.models import Sum
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -55,6 +56,7 @@ def update_student_progress_for_assigned_paths(sender, instance, action, reverse
                                 student=profile.user,
                                 lesson=lesson
                             ).delete()
+                            recalculate_profile_points(profile)
         else:  # Removing students from a path
             path = instance
             user_ids = pk_set
@@ -68,6 +70,7 @@ def update_student_progress_for_assigned_paths(sender, instance, action, reverse
                                 student=user,
                                 lesson=lesson
                             ).delete()
+                            recalculate_profile_points(user.profile)
 
 @receiver(m2m_changed, sender=Module.lessons.through)
 def update_student_progress_for_lessons_in_module(sender, instance, action, reverse, model, pk_set, **kwargs):
@@ -112,6 +115,7 @@ def update_student_progress_for_lessons_in_module(sender, instance, action, reve
                                 student=student.user,
                                 lesson=lesson
                             ).delete()
+                            recalculate_profile_points(student.user.profile)
         else:  # Removing modules from a lesson
             lesson = instance
             module_ids = pk_set
@@ -125,6 +129,7 @@ def update_student_progress_for_lessons_in_module(sender, instance, action, reve
                                 student=student.user,
                                 lesson=lesson
                             ).delete()
+                            recalculate_profile_points(student.user.profile)
 
 @receiver(m2m_changed, sender=Path.modules.through)
 def update_student_progress_for_modules_in_path(sender, instance, action, reverse, model, pk_set, **kwargs):
@@ -156,6 +161,7 @@ def update_student_progress_for_modules_in_path(sender, instance, action, revers
                                 student=student.user,
                                 lesson=lesson
                             ).delete()
+                            recalculate_profile_points(student.user.profile)
         else:  # Removing paths from a module
             module = instance
             path_ids = pk_set
@@ -169,6 +175,7 @@ def update_student_progress_for_modules_in_path(sender, instance, action, revers
                                 student=student.user,
                                 lesson=lesson
                             ).delete()
+                            recalculate_profile_points(student.user.profile)
 
 @receiver(pre_delete, sender=Module)
 def delete_student_progress_for_deleted_module(sender, instance, **kwargs):
@@ -189,6 +196,7 @@ def delete_student_progress_for_deleted_module(sender, instance, **kwargs):
             if not overlapping_modules:
                 # Delete the progress record if this lesson is not part of any other assigned modules
                 student_progress.delete()
+                recalculate_profile_points(student.profile)
 
 @receiver(pre_delete, sender=Path)
 def delete_student_progress_for_deleted_path(sender, instance, **kwargs):
@@ -210,3 +218,45 @@ def delete_student_progress_for_deleted_path(sender, instance, **kwargs):
                 if not overlapping_paths:
                     # Delete the progress record if this lesson is not part of any other assigned paths
                     student_progress.delete()
+                    recalculate_profile_points(student.profile)
+
+@receiver(pre_delete, sender=Lesson)
+def update_points_on_lesson_deletion(sender, instance, **kwargs):
+    # Find all students who have progress in this lesson
+    student_progress_qs = StudentProgress.objects.filter(lesson=instance)
+    for student_progress in student_progress_qs:
+        student = student_progress.student
+        # Delete the progress entry for the lesson being deleted
+        student_progress.delete()
+        recalculate_profile_points(student.profile)
+
+@receiver(pre_delete, sender=StudentProgress)
+def update_points_on_student_progress_deletion(sender, instance, **kwargs):
+    # Recalculate the student's total points when a StudentProgress record is deleted
+    recalculate_profile_points(instance.student.profile)
+
+@receiver(post_save, sender=StudentProgress)
+def update_points_on_completion(sender, instance, **kwargs):
+    if 'raw' in kwargs and kwargs['raw']:
+        return
+
+    if instance.completed:
+        if instance.points != instance.lesson.points:
+            instance.points = instance.lesson.points
+            instance.save(update_fields=['points'])
+    else:
+        if instance.points != 0:
+            instance.points = 0
+            instance.save(update_fields=['points'])
+
+@receiver(post_save, sender=StudentProgress)
+def update_student_profile_points(sender, instance, **kwargs):
+    if 'raw' in kwargs and kwargs['raw']:
+        return
+
+    recalculate_profile_points(instance.student.profile)
+
+def recalculate_profile_points(profile):
+    total_points = StudentProgress.objects.filter(student=profile.user, completed=True).aggregate(Sum('points'))['points__sum'] or 0
+    profile.points = total_points
+    profile.save(update_fields=['points'])

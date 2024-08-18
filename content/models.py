@@ -63,7 +63,7 @@ class Lesson(models.Model):
     # Fields specific to certain lesson types
     video_url = models.URLField(blank=True, null=True)
     quiz_questions = models.ManyToManyField('Question', blank=True, related_name='lessons')
-    passing_percentage = models.PositiveIntegerField(blank=True, null=True, default=70)  # Defualt 70%
+    passing_percentage = models.PositiveIntegerField(blank=True, null=True, default=70)  # Default 70%
     due_date = models.DateField(blank=True, null=True)
     recipient_email = models.EmailField(blank=True, null=True)
 
@@ -75,6 +75,7 @@ class StudentProgress(models.Model):
     lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
     date_completed = models.DateTimeField(null=True, blank=True)
+    points = models.PositiveIntegerField(default=0)
 
     class Meta:
         unique_together = ('student', 'lesson')

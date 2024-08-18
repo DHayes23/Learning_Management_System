@@ -24,6 +24,7 @@ class Profile(models.Model):
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='student')
     cohort = models.CharField(max_length=20, choices=COHORT_CHOICES, blank=True, null=True)
     assigned_paths = models.ManyToManyField(Path, related_name='students', blank=True)
+    points = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.user.username
