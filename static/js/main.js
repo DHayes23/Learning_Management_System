@@ -1,20 +1,22 @@
 // Used to render the Chart.js donut chart in dashboard-area-3
 function renderCompletionChart(completedPaths, incompletePaths, completedModules, incompleteModules, completedLessons, incompleteLessons) {
     var ctx = document.getElementById('completionChart').getContext('2d');
+    var originalData = [
+        completedPaths,
+        incompletePaths,
+        completedModules,
+        incompleteModules,
+        completedLessons,
+        incompleteLessons
+    ];
+
     var completionChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
             labels: ['Completed Paths', 'Incomplete Paths', 'Completed Modules', 'Incomplete Modules', 'Completed Lessons', 'Incomplete Lessons'],
             datasets: [{
                 label: 'Completion Status',
-                data: [
-                    completedPaths,
-                    incompletePaths,
-                    completedModules,
-                    incompleteModules,
-                    completedLessons,
-                    incompleteLessons
-                ],
+                data: [...originalData],
                 backgroundColor: [
                     'rgba(34, 139, 34, 0.6)',    // Completed Paths - Dark Green
                     'rgba(255, 69, 58, 0.6)',    // Incomplete Paths - Bright Red
@@ -41,10 +43,61 @@ function renderCompletionChart(completedPaths, incompletePaths, completedModules
                 legend: {
                     position: 'top',
                     labels: {
-                        color: '#e2d0c5'
+                        color: '#e2d0c5',
+                        usePointStyle: false,
+                        generateLabels: function(chart) {
+                            return chart.data.labels.map(function(label, i) {
+                                return {
+                                    text: chart.data.datasets[0].data[i] !== 0 ? label : '\u0336' + label.split('').join('\u0336'),  // Add strikethrough if hidden
+                                    fillStyle: chart.data.datasets[0].backgroundColor[i],
+                                    hidden: chart.data.datasets[0].data[i] === 0, // Adjust the hidden property based on data visibility
+                                    index: i,
+                                    fontColor: '#e2d0c5',
+                                };
+                            });
+                        }
+                    },
+                    onClick: function(e, legendItem) {
+                        const index = legendItem.index;
+                        const chart = this.chart;
+                        const chartData = chart.data.datasets[0].data;
+
+                        // Toggle visibility
+                        if (chartData[index] === 0) {
+                            chartData[index] = originalData[index]; // Restore the data
+                        } else {
+                            chartData[index] = 0; // Hide the data
+                        }
+
+                        // Update chart and legend
+                        chart.update();
                     }
                 },
+                                tooltip: {
+                    enabled: false  // Disable tooltips to prevent clipping
+                }
             },
+            onClick: function(evt, activeElements) {
+                const activeElement = activeElements[0];
+                if (activeElement) {
+                    const datasetIndex = activeElement.datasetIndex;
+                    const index = activeElement.index;
+                    const chartData = this.data.datasets[datasetIndex].data;
+
+                    // Toggle visibility: hide if visible, restore original if hidden
+                    if (chartData[index] !== 0) {
+                        chartData[index] = 0;
+                    } else {
+                        chartData[index] = originalData[index];
+                    }
+
+                    // Redraw the chart
+                    this.update();
+                }
+            },
+            onHover: function(event, chartElement) {
+                event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
+            }
         }
     });
 }
