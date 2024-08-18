@@ -78,6 +78,12 @@ def dashboard(request):
     incomplete_modules_count = total_modules_count - completed_modules_count
     incomplete_lessons_count = total_lessons_count - completed_lessons_count
 
+    # Calculate the percentage of lessons completed
+    if total_lessons_count > 0:
+        lesson_completion_percentage = (completed_lessons_count / total_lessons_count) * 100
+    else:
+        lesson_completion_percentage = 0
+
     # Leaderboard data with anonymised names, excluding students who have not yet acquired points
     cohort_profiles = Profile.objects.filter(cohort=user_profile.cohort, points__gt=0).order_by('-points')
     leaderboard_labels = [
@@ -96,6 +102,7 @@ def dashboard(request):
         'user_role': user_profile.role,
         'leaderboard_labels': leaderboard_labels,
         'leaderboard_data': leaderboard_data,
+        'lesson_completion_percentage': lesson_completion_percentage,
     }
 
     return render(request, 'profiles/dashboard.html', context)

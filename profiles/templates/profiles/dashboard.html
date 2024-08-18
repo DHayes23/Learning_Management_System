@@ -34,14 +34,14 @@
 
         <div class="dashboard-area-3">
             <canvas id="completionChart" width="400" height="400"></canvas>
-            <div class="progress-circle">
+            <div class="progress-circle" data-bs-toggle="tooltip" title="Overall Progress">
                 <div class="percent">
                     <svg>
                         <circle cx="104" cy="104" r="90"></circle>
-                        <circle cx="104" cy="104" r="90" style="--percentage: 25;"></circle>
+                        <circle cx="104" cy="104" r="90" style="--percentage: {{ lesson_completion_percentage|add:0 }};"></circle>
                     </svg>
                     <div class="number">
-                        <h2>75<span>%</span></h2>
+                        <h2>{{ lesson_completion_percentage|floatformat:0 }}<span>%</span></h2>
                     </div>
                 </div>
             </div>

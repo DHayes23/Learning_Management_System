@@ -585,6 +585,10 @@ body {
     /* background-image: url("/static/media/images/Texture2.png"); */
     background-size: 200px;
     background-position: center;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .dashboard-card:hover {
@@ -684,7 +688,7 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-52.5%, -35%); /* Raising the left number moves the circle left. Raising the right number moves the circle up. */
+    transform: translate(-52.2%, -35%); /* Raising the left number moves the circle left. Raising the right number moves the circle up. */
     border-radius: 50%;
     height: 208px;
     width: 208px;
