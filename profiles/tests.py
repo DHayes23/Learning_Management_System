@@ -6,6 +6,7 @@ from profiles.models import Profile
 from profiles.decorators import role_required
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
+from django.test import Client
 
 class ProfileModelTest(TestCase):
     
@@ -127,3 +128,100 @@ class RoleBasedAccessControlTest(TestCase):
         decorated_view = role_required(['trainer', 'manager'])(self.mock_view)
         response = decorated_view(request)
         self.assertEqual(response.status_code, 200, "Trainers should have access to this view.")
+
+class ProfileViewTest(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='student', password='testpassword')
+        self.profile = self.user.profile
+        self.path = Path.objects.create(name='Path 1')
+        self.module = Module.objects.create(name='Module 1')
+        self.lesson = Lesson.objects.create(name='Lesson 1', lesson_type='text')
+        self.module.lessons.add(self.lesson)
+        self.path.modules.add(self.module)
+        self.profile.assigned_paths.add(self.path)
+        self.client.login(username='student', password='testpassword')
+
+    def test_profile_view_renders_correctly(self):
+        # Test the profile view renders with correct context data
+        response = self.client.get(reverse('profile'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'profiles/profile.html')
+        self.assertIn('assigned_paths', response.context)
+        self.assertIn('completed_paths', response.context)
+        self.assertIn('user_role', response.context)
+        self.assertEqual(response.context['user_role'], self.profile.role)
+
+    def test_profile_view_with_no_assigned_paths(self):
+        # Test profile view when the user has no assigned paths
+        self.profile.assigned_paths.clear()
+        response = self.client.get(reverse('profile'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context['assigned_paths']), 0)
+        self.assertEqual(len(response.context['completed_paths']), 0)
+
+    def test_profile_view_completion_status(self):
+        # Test profile view correctly marks paths and modules as completed or not
+        progress, created = StudentProgress.objects.get_or_create(student=self.user, lesson=self.lesson, defaults={'completed': True})
+        if not created:
+            progress.completed = True
+            progress.save()
+
+        response = self.client.get(reverse('profile'))
+        path = response.context['assigned_paths'][0]
+        self.assertTrue(path in self.profile.get_completed_paths())
+        module = path.modules_with_completion_status[0]
+        self.assertTrue(module.is_completed_by_student(self.user))
+        self.assertEqual(module.completed_lessons, 1)
+        self.assertEqual(module.total_lessons, 1)
+
+class DashboardViewTest(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='student', password='testpassword')
+        self.profile = self.user.profile
+        self.path = Path.objects.create(name='Path 1')
+        self.module = Module.objects.create(name='Module 1')
+        self.lesson1 = Lesson.objects.create(name='Lesson 1', lesson_type='text')
+        self.lesson2 = Lesson.objects.create(name='Lesson 2', lesson_type='video')
+        self.module.lessons.add(self.lesson1, self.lesson2)
+        self.path.modules.add(self.module)
+        self.profile.assigned_paths.add(self.path)
+        self.client.login(username='student', password='testpassword')
+
+    def test_dashboard_view_renders_correctly(self):
+        # Test the dashboard view renders with correct context data
+        response = self.client.get(reverse('dashboard'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'profiles/dashboard.html')
+        self.assertIn('completed_paths_count', response.context)
+        self.assertIn('incomplete_paths_count', response.context)
+        self.assertIn('completed_modules_count', response.context)
+        self.assertIn('incomplete_modules_count', response.context)
+        self.assertIn('completed_lessons_count', response.context)
+        self.assertIn('incomplete_lessons_count', response.context)
+        self.assertIn('lesson_completion_percentage', response.context)
+        self.assertIn('leaderboard_labels', response.context)
+        self.assertIn('leaderboard_data', response.context)
+
+    def test_dashboard_view_with_no_assigned_paths(self):
+        # Test dashboard view when the user has no assigned paths
+        self.profile.assigned_paths.clear()
+        response = self.client.get(reverse('dashboard'))
+        self.assertEqual(response.context['completed_paths_count'], 0)
+        self.assertEqual(response.context['incomplete_paths_count'], 0)
+        self.assertEqual(response.context['completed_modules_count'], 0)
+        self.assertEqual(response.context['completed_lessons_count'], 0)
+        self.assertEqual(response.context['lesson_completion_percentage'], 0)
+
+    def test_dashboard_view_leaderboard(self):
+        # Test the leaderboard data in the dashboard view
+        self.profile.points = 100
+        self.profile.save()
+        response = self.client.get(reverse('dashboard'))
+        self.assertIn('leaderboard_labels', response.context)
+        self.assertIn('leaderboard_data', response.context)
+        self.assertEqual(response.context['leaderboard_labels'][0], 'student')
+        self.assertEqual(response.context['leaderboard_data'][0], 100)
