@@ -6,8 +6,6 @@
     --background-color-dark: #1c2021;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
-
 html, body {
     height: 100%;
     margin: 0;
@@ -53,9 +51,9 @@ body {
 }
 
 .navbar-brand {
-    font-family: "Comfortaa", monospace;
+    font-family: "Orbitron", sans-serif;
     color: var(--accent-color-2);
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     padding-left: 1rem;
     font-weight: bold;
     text-align: left;
@@ -145,7 +143,7 @@ body {
 .auth-heading {
     text-align: center;
     font-size: 3.5rem;
-    font-family: "Comfortaa", monospace;
+    font-family: "Chakra Petch", sans-serif;
     color: var(--text-color);
     margin-bottom: 3rem;
     margin-top: 20%;
@@ -157,7 +155,7 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 1.5rem;
-    font-family: "Comfortaa";
+    font-family: "Chakra Petch", sans-serif;
     border: var(--accent-color-1) solid 3px;
     background-color: var(--background-color-dark);
     border-radius: 50px;
@@ -264,6 +262,7 @@ body {
 
 /* Profile and Path Card Styling */
 .profile-heading {
+    font-family: "Orbitron", sans-serif;
     color: var(--text-color);
     font-size: 2.5rem;
     text-align: center;
@@ -271,6 +270,7 @@ body {
 }
 
 .section-heading {
+    font-family: "Orbitron", sans-serif;
     color: var(--text-color);
     font-size: 3rem;
     text-align: center;
@@ -301,7 +301,7 @@ body {
     padding: 1.5rem;
     padding-bottom: 2rem;
     text-align: center;
-    font-family: "Comfortaa", monospace;
+    font-family: "Chakra Petch", sans-serif;
     color: var(--text-color);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
     transition: box-shadow 0.3s ease-in-out;
@@ -343,11 +343,13 @@ body {
 }
 
 .path-card p {
+    font-family: "Chakra Petch", sans-serif;
     font-size: 1rem;
     margin-bottom: 2rem;
 }
 
 .path-card a {
+    font-family: "Chakra Petch", sans-serif;
     width: 100%;
     text-align: center;
     font-size: 1.3rem;
@@ -371,7 +373,7 @@ body {
     padding: 0;
     margin: 0;
     list-style: none;
-    font-family: "Comfortaa", monospace;
+    font-family: "Chakra Petch", sans-serif;
 }
 
 .modules-container ul li {
@@ -429,7 +431,7 @@ body {
     border-radius: 15px;
     padding: 1.5rem;
     text-align: center;
-    font-family: "Comfortaa", monospace;
+    font-family: "Chakra Petch", sans-serif;
     color: var(--text-color);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
     transition: box-shadow 0.3s ease-in-out;
@@ -468,8 +470,8 @@ body {
 }
 
 .lesson-details li {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
     color: var(--text-color);
 }
 
@@ -546,7 +548,7 @@ body {
     border-right: 5px solid var(--background-color-dark);
     border-top-left-radius: 60px;
     background-image: url("/static/media/images/Texture3.png");
-    background-size: 20px;
+    background-size: 30px;
     background-position: center;
     box-shadow: rgba(14, 14, 14, 0.6) -5px 0px 35px -3px;
 }
@@ -561,9 +563,9 @@ body {
 .dashboard-card {
     background-color: var(--background-color-dark);
     color: var(--accent-color-1);
-    font-weight: bold;
-    font-size: 4rem;
-    text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 5.5rem;
+    text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
     border-radius: 30px;
     padding: 1rem;
     text-align: center;
@@ -580,8 +582,8 @@ body {
     flex-direction: column;
     border-bottom: 4px solid rgba(0, 0, 0, 0.5);
     border-left: 2px solid rgba(0, 0, 0, 0.253);
-    background-image: url("/static/media/images/Texture6.png");
-    background-size: 150px;
+    /* background-image: url("/static/media/images/Texture2.png"); */
+    background-size: 200px;
     background-position: center;
 }
 
@@ -596,12 +598,14 @@ body {
     transform: translateY(-15px);
 }
 
+
+
 .card-text-below, .card-text-above {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    font-family: "Orbitron", sans-serif;
     font-size: 1.5rem;
-    font-weight: bold;
     color: var(--text-color);
     text-align: center;
     white-space: nowrap;
@@ -650,8 +654,8 @@ body {
     border-right: 5px solid var(--background-color-dark);
     border-bottom: 5px solid var(--background-color-dark);
     border-bottom-right-radius: 60px;
-    background-image: url("/static/media/images/Texture5.png");
-    background-size: 350px;
+    background-image: url("/static/media/images/Texture15.png");
+    background-size: 500px;
     background-position: center;
     box-shadow: rgba(14, 14, 14, 0.6) 5px 5px 35px -3px;
     display: flex;
@@ -660,7 +664,7 @@ body {
 
 .vertical-text {
     margin-right: 2rem;
-    font-family: "Rubik Mono One", monospace;
+    font-family: "Chakra Petch", sans-serif;
     font-size: 1.8rem;
     font-weight: bold;
     line-height: 1.5;
