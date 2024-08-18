@@ -37,7 +37,22 @@
         </div>
 
         <div class="dashboard-area-4">
-            <p></p>
+            <div class="vertical-text">
+                L<br>
+                E<br>
+                A<br>
+                D<br>
+                E<br>
+                R<br>
+                B<br>
+                O<br>
+                A<br>
+                R<br>
+                D
+            </div>
+            <div class="leaderboard-chart-container">
+                <canvas id="leaderboardChart" width="400" height="400"></canvas>
+            </div>
         </div>
 
     </div>
@@ -47,13 +62,20 @@
 {% block postloadjs %}
 {{ block.super }}
 <script>
+    // Render the completion chart
     renderCompletionChart(
         {{ completed_paths_count }},
-        {{ remaining_paths_count }},
+        {{ incomplete_paths_count }},
         {{ completed_modules_count }},
-        {{ remaining_modules_count }},
+        {{ incomplete_modules_count }},
         {{ completed_lessons_count }},
-        {{ remaining_lessons_count }}
+        {{ incomplete_lessons_count }}
+    );
+
+    // Render the leaderboard chart
+    renderLeaderboardChart(
+        {{ leaderboard_labels|safe }},
+        {{ leaderboard_data|safe }}
     );
 </script>
 {% endblock %}

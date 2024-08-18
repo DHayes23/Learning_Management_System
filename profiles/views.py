@@ -73,19 +73,29 @@ def dashboard(request):
     total_modules_count = len(total_modules)
     total_lessons_count = len(total_lessons)
 
-    # Calculate remaining counts
-    remaining_paths_count = total_paths_count - completed_paths_count
-    remaining_modules_count = total_modules_count - completed_modules_count
-    remaining_lessons_count = total_lessons_count - completed_lessons_count
+    # Calculate incomplete counts
+    incomplete_paths_count = total_paths_count - completed_paths_count
+    incomplete_modules_count = total_modules_count - completed_modules_count
+    incomplete_lessons_count = total_lessons_count - completed_lessons_count
+
+    # Leaderboard data with anonymised names, excluding students who have not yet acquired points
+    cohort_profiles = Profile.objects.filter(cohort=user_profile.cohort, points__gt=0).order_by('-points')
+    leaderboard_labels = [
+        profile.user.username if profile.user == request.user else "Student"
+        for profile in cohort_profiles
+    ]
+    leaderboard_data = [profile.points for profile in cohort_profiles]
 
     context = {
         'completed_paths_count': completed_paths_count,
-        'remaining_paths_count': remaining_paths_count,
+        'incomplete_paths_count': incomplete_paths_count,
         'completed_modules_count': completed_modules_count,
-        'remaining_modules_count': remaining_modules_count,
+        'incomplete_modules_count': incomplete_modules_count,
         'completed_lessons_count': completed_lessons_count,
-        'remaining_lessons_count': remaining_lessons_count,
+        'incomplete_lessons_count': incomplete_lessons_count,
         'user_role': user_profile.role,
+        'leaderboard_labels': leaderboard_labels,
+        'leaderboard_data': leaderboard_data,
     }
 
     return render(request, 'profiles/dashboard.html', context)

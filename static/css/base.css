@@ -6,6 +6,8 @@
     --background-color-dark: #1c2021;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
+
 html, body {
     height: 100%;
     margin: 0;
@@ -579,7 +581,7 @@ body {
     border-bottom: 4px solid rgba(0, 0, 0, 0.5);
     border-left: 2px solid rgba(0, 0, 0, 0.253);
     background-image: url("/static/media/images/Texture6.png");
-    background-size: 200px;
+    background-size: 150px;
     background-position: center;
 }
 
@@ -632,7 +634,7 @@ body {
     padding: 1rem;
     border: 5px solid var(--background-color-dark);
     border-bottom-left-radius: 60px;
-    height: 500px;
+    height: 530px;
     background-image: url("/static/media/images/Texture7.png");
     background-size: 60px;
     background-position: center;
@@ -652,4 +654,23 @@ body {
     background-size: 350px;
     background-position: center;
     box-shadow: rgba(14, 14, 14, 0.6) 5px 5px 35px -3px;
+    display: flex;
+    align-items: center;
+}
+
+.vertical-text {
+    margin-right: 2rem;
+    font-family: "Rubik Mono One", monospace;
+    font-size: 1.8rem;
+    font-weight: bold;
+    line-height: 1.5;
+    text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.leaderboard-chart-container {
+    flex-grow: 1;
 }
