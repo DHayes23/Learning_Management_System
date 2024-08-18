@@ -582,8 +582,8 @@ body {
     flex-direction: column;
     border-bottom: 4px solid rgba(0, 0, 0, 0.5);
     border-left: 2px solid rgba(0, 0, 0, 0.253);
-    /* background-image: url("/static/media/images/Texture2.png"); */
-    background-size: 200px;
+    background-image: url("/static/media/images/Texture24.png");
+    background-size: 250px;
     background-position: center;
     user-select: none;
     -webkit-user-select: none;
