@@ -44,7 +44,7 @@ BADGES = [
     },
     {
         'name': 'Five Lessons Complete',
-        'description': 'Completed 50 lessons in total',
+        'description': 'Completed 5 lessons in total',
         'icon': 'fa-sharp fa-regular fa-tally',
         'condition': has_completed_5_lessons
     },
