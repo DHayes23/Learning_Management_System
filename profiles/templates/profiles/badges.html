@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+<h1 class="section-heading">Badges</h1>
+
 <div class="badge-container">
     {% for badge in badges %}
     <div class="badge-card {% if badge.achieved %}achieved{% endif %}">

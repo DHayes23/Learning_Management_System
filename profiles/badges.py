@@ -55,6 +55,12 @@ BADGES = [
         'condition': has_1000_points
     },
     {
+        'name': 'Lesson Sprinter',
+        'description': 'Completed 10 lessons in a week',
+        'icon': 'fa-sharp fa-solid fa-person-running-fast',
+        'condition': has_completed_10_lessons_in_week
+    },
+    {
         'name': '7 Day Streak',
         'description': '7 days of continuous learning',
         'icon': 'fa-sharp fa-solid fa-fire',
@@ -78,10 +84,5 @@ BADGES = [
         'icon': 'fa-sharp fa-solid fa-trophy',
         'condition': has_completed_10_paths
     },
-    {
-        'name': 'Lesson Sprinter',
-        'description': 'Completed 10 lessons in a week',
-        'icon': 'fa-sharp fa-solid fa-person-running-fast',
-        'condition': has_completed_10_lessons_in_week
-    },
+
 ]
