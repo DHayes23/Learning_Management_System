@@ -815,7 +815,7 @@ circle:nth-child(2) {
 .badge-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem; /* Increased gap for more space between badges */
+    gap: 2rem;
     justify-content: center;
     padding: 2rem;
 }
@@ -837,7 +837,8 @@ circle:nth-child(2) {
     height: 350px;
     width: 300px;
     margin: auto;
-    margin-bottom: 5rem;
+    margin-bottom: 3rem;
+    position: relative;
 }
 
 .badge-card.achieved {
@@ -846,10 +847,9 @@ circle:nth-child(2) {
 
 .badge-icon {
     font-size: 4rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
     color: var(--accent-color-1);
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto;
 }
 
 .badge-card.achieved .badge-icon {
@@ -874,4 +874,12 @@ circle:nth-child(2) {
 .badge-card:hover {
     transform: translateY(-5px);
     box-shadow: rgba(0, 0, 0, 0.4) 0px 8px 20px;
+}
+
+.badge-completed-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    color: var(--accent-color-2);
 }

@@ -2,10 +2,12 @@
 
 {% block content %}
 <h1 class="section-heading">Badges</h1>
-
 <div class="badge-container">
     {% for badge in badges %}
-    <div class="badge-card {% if badge.achieved %}achieved{% endif %}">
+    <div class="badge-card {% if badge.achieved %}achieved{% endif %}" style="position: relative;">
+        {% if badge.achieved %}
+        <i class="fa-sharp fa-light fa-check-circle badge-completed-icon"></i>
+        {% endif %}
         <i class="{{ badge.icon }} badge-icon"></i>
         <h3>{{ badge.name }}</h3>
         <p>{{ badge.description }}</p>

@@ -111,14 +111,13 @@ def dashboard(request):
 
 def badges_view(request):
     profile = request.user.profile
-    earned_badges = profile.get_badges()
-
+    
     badges = [
         {
             'name': badge['name'],
             'description': badge['description'],
             'icon': badge['icon'],
-            'achieved': badge['name'] in earned_badges,
+            'achieved': badge['condition'](profile),
         }
         for badge in BADGES
     ]
