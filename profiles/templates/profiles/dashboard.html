@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-content-area">
+    <h1 class="profile-heading">Welcome to your Dashboard, {{ user.username }}</h1>
+    <div class="dashboard-container">
+
+        <div class="dashboard-area-1">
+            <div class="dashboard-cards">
+                <div class="dashboard-card">
+                    {{ completed_paths_count }}
+                    <p class="card-text-above">
+                        Path{% if completed_paths_count != 1 %}s{% endif %} Completed
+                    </p>
+                </div>
+                <div class="dashboard-card">
+                    {{ completed_modules_count }}
+                    <p class="card-text-above">
+                        Module{% if completed_modules_count != 1 %}s{% endif %} Completed
+                    </p>
+                </div>
+                <div class="dashboard-card">
+                    {{ completed_lessons_count }}
+                    <p class="card-text-above">
+                        Lesson{% if completed_lessons_count != 1 %}s{% endif %} Completed
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-area-2" data-bs-toggle="tooltip" title="Complete a lesson every day to keep your streak going!">
+            <div class="streak-card">
+                <p>Current Daily Streak</p>
+                {% if daily_streak == 0 %}
+                    <i class="fa-sharp-duotone fa-solid fa-snowflake"></i>
+                {% elif daily_streak <= 5 %}
+                    <i class="fa-sharp-duotone fa-solid fa-fire"></i>
+                {% else %}
+                    <i class="fa-sharp-duotone fa-solid fa-fire-flame-curved"></i>
+                {% endif %}
+                <h2>{{ daily_streak }} Day{% if daily_streak != 1 %}s{% endif %}</h2>
+            </div>
+        </div>
+        
+
+        <div class="dashboard-area-3">
+            <canvas id="completionChart" width="400" height="400"></canvas>
+            <div class="progress-circle" data-bs-toggle="tooltip" title="Overall Progress">
+                <div class="percent">
+                    <svg>
+                        <circle cx="104" cy="104" r="90"></circle>
+                        <circle cx="104" cy="104" r="90" style="--percentage: {{ lesson_completion_percentage|add:0 }};"></circle>
+                    </svg>
+                    <div class="number">
+                        <h2>{{ lesson_completion_percentage|floatformat:0 }}<span>%</span></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-area-4">
+            <div class="vertical-text">
+                L<br>
+                E<br>
+                A<br>
+                D<br>
+                E<br>
+                R<br>
+                B<br>
+                O<br>
+                A<br>
+                R<br>
+                D
+            </div>
+            <div class="leaderboard-chart-container">
+                <canvas id="leaderboardChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block postloadjs %}
+{{ block.super }}
+<script>
+    // Render the completion chart
+    renderCompletionChart(
+        {{ completed_paths_count }},
+        {{ incomplete_paths_count }},
+        {{ completed_modules_count }},
+        {{ incomplete_modules_count }},
+        {{ completed_lessons_count }},
+        {{ incomplete_lessons_count }}
+    );
+
+    // Render the leaderboard chart
+    renderLeaderboardChart(
+        {{ leaderboard_labels|safe }},
+        {{ leaderboard_data|safe }}
+    );
+</script>
+{% endblock %}
