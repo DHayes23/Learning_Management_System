@@ -127,19 +127,18 @@ function renderCompletionChart(completedPaths, incompletePaths, completedModules
     });
 }
 
-// Array of colors to be used for the leaderboard bars
-const colors = [
-    'rgba(255, 159, 64, 0.6)',  // Light Orange
-    'rgba(54, 162, 235, 0.6)',  // Light Blue
-    'rgba(153, 102, 255, 0.6)', // Light Purple
-    'rgba(255, 206, 86, 0.6)',  // Light Yellow
-    'rgba(123, 239, 178, 0.6)', // Light Green
-    'rgba(75, 192, 192, 0.6)',  // Light Teal
-    'rgba(255, 99, 132, 0.6)',  // Light Red
-];
-
 // Used to render the Chart.js horizontal bar chart in dashboard-area-4
 function renderLeaderboardChart(labels, data) {
+    // Array of colors to be used for the leaderboard bars
+    const colors = [
+        'rgba(255, 159, 64, 0.6)',  // Light Orange
+        'rgba(54, 162, 235, 0.6)',  // Light Blue
+        'rgba(153, 102, 255, 0.6)', // Light Purple
+        'rgba(255, 206, 86, 0.6)',  // Light Yellow
+        'rgba(123, 239, 178, 0.6)', // Light Green
+        'rgba(75, 192, 192, 0.6)',  // Light Teal
+        'rgba(255, 99, 132, 0.6)',  // Light Red
+    ];
     // Create an array of background colors based on the number of students in the cohort
     const backgroundColors = labels.map((label, index) => {
         return colors[index % colors.length];
