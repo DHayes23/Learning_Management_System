@@ -626,7 +626,7 @@ body {
 .dashboard-area-2 {
     grid-area: 1 / 7 / 3 / 9;
     background-color: var(--background-color-main);
-    padding: 1rem;
+    padding: 0rem;
     border-top: 5px solid var(--background-color-dark);
     border-right: 5px solid var(--background-color-dark);
     border-top-right-radius: 60px;
@@ -762,4 +762,50 @@ circle:nth-child(2) {
     stroke-dashoffset: calc(565.48 - (565.48 * var(--percentage)) / 100);
     stroke: #1b76ff;
     transition: stroke-dashoffset 0.5s ease;
+}
+
+/* Streak Card Styling */
+.streak-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: var(--text-color);
+    font-family: "Orbitron", sans-serif;
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.streak-card p {
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+    margin-top: 0;
+}
+
+.streak-card h2 {
+    margin-top: 1rem;
+    margin-bottom: 0rem;
+    font-size: 1.9rem;
+    color: var(--accent-color-1);
+}
+
+.streak-card i {
+    font-size: 3.5rem;
+    color: var(--accent-color-1);
+    translate: 0px;
+    margin: 0;
+    margin-bottom: 1rem;
+}
+
+.streak-card .fa-snowflake {
+    color: #00bfff;
+}
+
+.streak-card .fa-fire {
+    color: #ff4500;
+}
+
+.streak-card .fa-fire-flame-curved {
+    color: #ff6347;
 }

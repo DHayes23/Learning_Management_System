@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from content.models import Path, Module, StudentProgress
+from django.utils import timezone
+from datetime import timedelta
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -25,6 +27,8 @@ class Profile(models.Model):
     cohort = models.CharField(max_length=20, choices=COHORT_CHOICES, blank=True, null=True)
     assigned_paths = models.ManyToManyField(Path, related_name='students', blank=True)
     points = models.PositiveIntegerField(default=0)
+    daily_streak = models.PositiveIntegerField(default=0)
+    last_completion_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.user.username
@@ -52,3 +56,12 @@ class Profile(models.Model):
         lessons = module.lessons.all()
         completed_lessons = StudentProgress.objects.filter(student=self.user, lesson__in=lessons, completed=True).count()
         return completed_lessons == lessons.count()
+
+    def update_daily_streak(self):
+        today = timezone.now().date()
+        if self.last_completion_date == today - timedelta(days=1):
+            self.daily_streak += 1
+        elif self.last_completion_date != today:
+            self.daily_streak = 1
+        self.last_completion_date = today
+        self.save(update_fields=['daily_streak', 'last_completion_date'])

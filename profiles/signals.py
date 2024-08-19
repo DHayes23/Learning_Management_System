@@ -245,6 +245,9 @@ def update_points_on_completion(sender, instance, **kwargs):
         if instance.points != instance.lesson.points:
             instance.points = instance.lesson.points
             instance.save(update_fields=['points'])
+
+        # Update daily streak
+        instance.student.profile.update_daily_streak()
     else:
         if instance.points != 0:
             instance.points = 0

@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.test import Client
 from django.utils import timezone
+from datetime import timedelta
 
 class ProfileModelTest(TestCase):
     
@@ -114,7 +115,7 @@ class StudentProgressTest(TestCase):
         self.assertAlmostEqual(progress.date_completed, timezone.now(), delta=timezone.timedelta(seconds=10), msg="date_completed should be close to the current time when set.")
 
     def test_date_completed_field_reset_on_incomplete(self):
-        # Test that the date_completed field is reset when progres is marked as incomplete
+        # Test that the date_completed field is reset when progress is marked as incomplete
         progress = StudentProgress.objects.create(student=self.user, lesson=self.lesson1, completed=True, date_completed=timezone.now())
         self.assertIsNotNone(progress.date_completed, "date_completed should be set when progress is marked as completed.")
 
@@ -123,6 +124,48 @@ class StudentProgressTest(TestCase):
 
         progress.refresh_from_db()
         self.assertIsNone(progress.date_completed, "date_completed should be reset to None when progress is marked as incomplete.")
+
+    def test_daily_streak_incremented_on_completion(self):
+        # Test that daily streak is incremented when a lesson is completed
+        self.profile.last_completion_date = timezone.now().date() - timedelta(days=1)
+        self.profile.daily_streak = 1
+        self.profile.save()
+
+        progress = StudentProgress.objects.create(student=self.user, lesson=self.lesson1, completed=True)
+        progress.save()
+
+        self.profile.refresh_from_db()
+        self.assertEqual(self.profile.daily_streak, 2, "Daily streak should be incremented by 1.")
+        self.assertEqual(self.profile.last_completion_date, timezone.now().date(), "Last completion date should be updated to today.")
+
+    def test_daily_streak_reset_after_gap(self):
+        # Test that daily streak is reset if a day is skipped
+        self.profile.last_completion_date = timezone.now().date() - timedelta(days=2)
+        self.profile.daily_streak = 3
+        self.profile.save()
+
+        progress = StudentProgress.objects.create(student=self.user, lesson=self.lesson1, completed=True)
+        progress.save()
+
+        self.profile.refresh_from_db()
+        self.assertEqual(self.profile.daily_streak, 1, "Daily streak should be reset to 1 after a gap.")
+        self.assertEqual(self.profile.last_completion_date, timezone.now().date(), "Last completion date should be updated to today.")
+
+    def test_no_streak_increment_for_multiple_completions_in_a_day(self):
+        # Test that daily streak does not increment more than once per day
+        self.profile.last_completion_date = timezone.now().date()
+        self.profile.daily_streak = 5
+        self.profile.save()
+
+        progress = StudentProgress.objects.create(student=self.user, lesson=self.lesson1, completed=True)
+        progress.save()
+
+        progress2 = StudentProgress.objects.create(student=self.user, lesson=self.lesson2, completed=True)
+        progress2.save()
+
+        self.profile.refresh_from_db()
+        self.assertEqual(self.profile.daily_streak, 5, "Daily streak should not increment more than once per day.")
+        self.assertEqual(self.profile.last_completion_date, timezone.now().date(), "Last completion date should be today.")
 
 class RoleBasedAccessControlTest(TestCase):
 

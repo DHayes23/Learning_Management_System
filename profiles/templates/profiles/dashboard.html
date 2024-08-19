@@ -14,10 +14,10 @@
                     </p>
                 </div>
                 <div class="dashboard-card">
+                    {{ completed_modules_count }}
                     <p class="card-text-above">
                         Module{% if completed_modules_count != 1 %}s{% endif %} Completed
                     </p>
-                    {{ completed_modules_count }}
                 </div>
                 <div class="dashboard-card">
                     {{ completed_lessons_count }}
@@ -28,9 +28,20 @@
             </div>
         </div>
 
-        <div class="dashboard-area-2">
-
+        <div class="dashboard-area-2" data-bs-toggle="tooltip" title="Complete a lesson every day to keep your streak going!">
+            <div class="streak-card">
+                <p>Current Daily Streak</p>
+                {% if daily_streak == 0 %}
+                    <i class="fa-sharp-duotone fa-solid fa-snowflake"></i>
+                {% elif daily_streak <= 5 %}
+                    <i class="fa-sharp-duotone fa-solid fa-fire"></i>
+                {% else %}
+                    <i class="fa-sharp-duotone fa-solid fa-fire-flame-curved"></i>
+                {% endif %}
+                <h2>{{ daily_streak }} Day{% if daily_streak != 1 %}s{% endif %}</h2>
+            </div>
         </div>
+        
 
         <div class="dashboard-area-3">
             <canvas id="completionChart" width="400" height="400"></canvas>
@@ -45,7 +56,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
 
         <div class="dashboard-area-4">

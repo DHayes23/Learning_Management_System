@@ -103,6 +103,7 @@ def dashboard(request):
         'leaderboard_labels': leaderboard_labels,
         'leaderboard_data': leaderboard_data,
         'lesson_completion_percentage': lesson_completion_percentage,
+        'daily_streak': user_profile.daily_streak,
     }
 
     return render(request, 'profiles/dashboard.html', context)
