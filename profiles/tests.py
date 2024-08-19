@@ -7,6 +7,7 @@ from profiles.decorators import role_required
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.test import Client
+from django.utils import timezone
 
 class ProfileModelTest(TestCase):
     
@@ -99,6 +100,29 @@ class StudentProgressTest(TestCase):
 
         self.assertFalse(StudentProgress.objects.filter(student=self.user, lesson=self.lesson1).exists(), "StudentProgress for lesson1 should be deleted because its module was removed.")
         self.assertTrue(StudentProgress.objects.filter(student=self.user, lesson=self.lesson3).exists(), "StudentProgress for lesson3 should still exist because it's in another module.")
+
+    def test_date_completed_field_updated_on_completion(self):
+        # Test that the date_completed field is set correctly when progress is marked as completed
+        progress = StudentProgress.objects.create(student=self.user, lesson=self.lesson1, completed=False)
+        self.assertIsNone(progress.date_completed, "date_completed should be None when progress is not completed.")
+        
+        progress.completed = True
+        progress.save()
+
+        progress.refresh_from_db()
+        self.assertIsNotNone(progress.date_completed, "date_completed should be set when progress is marked as completed.")
+        self.assertAlmostEqual(progress.date_completed, timezone.now(), delta=timezone.timedelta(seconds=10), msg="date_completed should be close to the current time when set.")
+
+    def test_date_completed_field_reset_on_incomplete(self):
+        # Test that the date_completed field is reset when progres is marked as incomplete
+        progress = StudentProgress.objects.create(student=self.user, lesson=self.lesson1, completed=True, date_completed=timezone.now())
+        self.assertIsNotNone(progress.date_completed, "date_completed should be set when progress is marked as completed.")
+
+        progress.completed = False
+        progress.save()
+
+        progress.refresh_from_db()
+        self.assertIsNone(progress.date_completed, "date_completed should be reset to None when progress is marked as incomplete.")
 
 class RoleBasedAccessControlTest(TestCase):
 
