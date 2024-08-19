@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from content.models import Path, Module, Lesson, StudentProgress
 from .models import Profile
 from django.db.models import Sum
+from django.utils import timezone
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -255,6 +256,18 @@ def update_student_profile_points(sender, instance, **kwargs):
         return
 
     recalculate_profile_points(instance.student.profile)
+
+@receiver(post_save, sender=StudentProgress)
+def update_date_completed_on_completion(sender, instance, **kwargs):
+    if 'raw' in kwargs and kwargs['raw']:
+        return
+
+    if instance.completed and not instance.date_completed:
+        instance.date_completed = timezone.now()
+        instance.save(update_fields=['date_completed'])
+    elif not instance.completed and instance.date_completed:
+        instance.date_completed = None
+        instance.save(update_fields=['date_completed'])
 
 def recalculate_profile_points(profile):
     total_points = StudentProgress.objects.filter(student=profile.user, completed=True).aggregate(Sum('points'))['points__sum'] or 0
