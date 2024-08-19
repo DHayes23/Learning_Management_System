@@ -2,6 +2,7 @@ from django.db.models.signals import post_save, pre_delete, m2m_changed
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from content.models import Path, Module, Lesson, StudentProgress
+from .badges import BADGES
 from .models import Profile
 from django.db.models import Sum
 from django.utils import timezone
@@ -276,3 +277,8 @@ def recalculate_profile_points(profile):
     total_points = StudentProgress.objects.filter(student=profile.user, completed=True).aggregate(Sum('points'))['points__sum'] or 0
     profile.points = total_points
     profile.save(update_fields=['points'])
+
+    # Check and award badges
+    for badge in BADGES:
+        if badge['condition'](profile):
+            profile.award_badge(badge['name'])

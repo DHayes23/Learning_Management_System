@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Profile, Module, StudentProgress
+from .badges import BADGES
 
 def profile(request):
     user_profile = request.user.profile
@@ -107,3 +108,24 @@ def dashboard(request):
     }
 
     return render(request, 'profiles/dashboard.html', context)
+
+def badges_view(request):
+    profile = request.user.profile
+    earned_badges = profile.get_badges()
+
+    badges = [
+        {
+            'name': badge['name'],
+            'description': badge['description'],
+            'icon': badge['icon'],
+            'achieved': badge['name'] in earned_badges,
+        }
+        for badge in BADGES
+    ]
+
+    context = {
+        'badges': badges,
+        'user_role': profile.role,
+    }
+    
+    return render(request, 'profiles/badges.html', context)

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="badge-container">
+    {% for badge in badges %}
+    <div class="badge-card {% if badge.achieved %}achieved{% endif %}">
+        <i class="{{ badge.icon }} badge-icon"></i>
+        <h3>{{ badge.name }}</h3>
+        <p>{{ badge.description }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
