@@ -41,6 +41,9 @@ body {
     overflow-x: hidden;
     padding-top: 1rem;
     border-right: 2px solid var(--text-color);
+    background-image: url("/static/media/images/Texture9.png");
+    background-size: 10px;
+    background-position: center;
 }
 
 .nav-divider {
@@ -48,9 +51,9 @@ body {
 }
 
 .navbar-brand {
-    font-family: "Comfortaa", monospace;
+    font-family: "Orbitron", sans-serif;
     color: var(--accent-color-2);
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     padding-left: 1rem;
     font-weight: bold;
     text-align: left;
@@ -140,7 +143,7 @@ body {
 .auth-heading {
     text-align: center;
     font-size: 3.5rem;
-    font-family: "Comfortaa", monospace;
+    font-family: "Chakra Petch", sans-serif;
     color: var(--text-color);
     margin-bottom: 3rem;
     margin-top: 20%;
@@ -152,7 +155,7 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 1.5rem;
-    font-family: "Comfortaa";
+    font-family: "Chakra Petch", sans-serif;
     border: var(--accent-color-1) solid 3px;
     background-color: var(--background-color-dark);
     border-radius: 50px;
@@ -259,6 +262,7 @@ body {
 
 /* Profile and Path Card Styling */
 .profile-heading {
+    font-family: "Orbitron", sans-serif;
     color: var(--text-color);
     font-size: 2.5rem;
     text-align: center;
@@ -266,6 +270,7 @@ body {
 }
 
 .section-heading {
+    font-family: "Orbitron", sans-serif;
     color: var(--text-color);
     font-size: 3rem;
     text-align: center;
@@ -296,7 +301,7 @@ body {
     padding: 1.5rem;
     padding-bottom: 2rem;
     text-align: center;
-    font-family: "Comfortaa", monospace;
+    font-family: "Chakra Petch", sans-serif;
     color: var(--text-color);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
     transition: box-shadow 0.3s ease-in-out;
@@ -338,11 +343,13 @@ body {
 }
 
 .path-card p {
+    font-family: "Chakra Petch", sans-serif;
     font-size: 1rem;
     margin-bottom: 2rem;
 }
 
 .path-card a {
+    font-family: "Chakra Petch", sans-serif;
     width: 100%;
     text-align: center;
     font-size: 1.3rem;
@@ -366,7 +373,7 @@ body {
     padding: 0;
     margin: 0;
     list-style: none;
-    font-family: "Comfortaa", monospace;
+    font-family: "Chakra Petch", sans-serif;
 }
 
 .modules-container ul li {
@@ -424,7 +431,7 @@ body {
     border-radius: 15px;
     padding: 1.5rem;
     text-align: center;
-    font-family: "Comfortaa", monospace;
+    font-family: "Chakra Petch", sans-serif;
     color: var(--text-color);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
     transition: box-shadow 0.3s ease-in-out;
@@ -463,8 +470,8 @@ body {
 }
 
 .lesson-details li {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
     color: var(--text-color);
 }
 
@@ -503,4 +510,302 @@ body {
 
 .lesson-card.completed h3 {
     color: var(--accent-color-2);
+}
+
+/* Dashboard Styling */
+
+.dashboard-content-area {
+    flex-grow: 1;
+    padding: 1rem;
+    overflow: hidden;
+    background-color: var(--background-color-main);
+    background-image: url(https://cdn.prod.website-files.com/6674f0cdb5b7b401612cf015/6674f0cdb5b7b401612cf065_noise-50.png);
+    background-size: auto;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.dashboard-container {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    color: var(--text-color);
+    font-size: 3rem;
+    margin-bottom: 0;
+}
+
+.dashboard-area-1 {
+    grid-area: 1 / 1 / 3 / 7;
+    background-color: var(--background-color-dark);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 1rem;
+    border-top: 5px solid var(--background-color-dark);
+    border-left: 5px solid var(--background-color-dark);
+    border-right: 5px solid var(--background-color-dark);
+    border-top-left-radius: 60px;
+    background-image: url("/static/media/images/Texture3.png");
+    background-size: 30px;
+    background-position: center;
+    box-shadow: rgba(14, 14, 14, 0.6) -5px 0px 35px -3px;
+}
+
+.dashboard-cards {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.dashboard-card {
+    background-color: var(--background-color-dark);
+    color: var(--accent-color-1);
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 5.5rem;
+    text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+    border-radius: 30px;
+    padding: 1rem;
+    text-align: center;
+    flex: 1;
+    margin: 0 3rem;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 150px;
+    width: 140px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: 4px solid rgba(0, 0, 0, 0.5);
+    border-left: 2px solid rgba(0, 0, 0, 0.253);
+    background-image: url("/static/media/images/Texture24.png");
+    background-size: 250px;
+    background-position: center;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 8px 20px;
+}
+
+.dashboard-card:nth-child(1),
+.dashboard-card:nth-child(2),
+.dashboard-card:nth-child(3) {
+    transform: translateY(-15px);
+}
+
+
+
+.card-text-below, .card-text-above {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Orbitron", sans-serif;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    text-align: center;
+    white-space: nowrap;
+}
+
+.card-text-below {
+    top: -3.2rem;
+}
+
+.card-text-above {
+    bottom: -3.8rem;
+}
+
+.dashboard-area-2 {
+    grid-area: 1 / 7 / 3 / 9;
+    background-color: var(--background-color-main);
+    padding: 0rem;
+    border-top: 5px solid var(--background-color-dark);
+    border-right: 5px solid var(--background-color-dark);
+    border-top-right-radius: 60px;
+    background-image: url("/static/media/images/Texture7.png");
+    background-size: 60px;
+    background-position: top;
+    box-shadow: rgba(14, 14, 14, 0.6) 5px 0px 35px -3px;
+}
+
+.dashboard-area-3 { 
+    position: relative;
+    grid-area: 3 / 1 / 7 / 4;
+    background-color: var(--background-color-main);
+    padding: 1rem;
+    border: 5px solid var(--background-color-dark);
+    border-bottom-left-radius: 60px;
+    height: 530px;
+    background-image: url("/static/media/images/Texture7.png");
+    background-size: 60px;
+    background-position: center;
+    box-shadow: rgba(14, 14, 14, 0.6) -5px 5px 35px -3px;
+    cursor: pointer;
+}
+
+.dashboard-area-4 {
+    grid-area: 3 / 4 / 7 / 9;
+    background-color: var(--background-color-dark);
+    padding: 1rem;
+    border-top: 5px solid var(--background-color-dark);
+    border-right: 5px solid var(--background-color-dark);
+    border-bottom: 5px solid var(--background-color-dark);
+    border-bottom-right-radius: 60px;
+    background-image: url("/static/media/images/Texture15.png");
+    background-size: 500px;
+    background-position: center;
+    box-shadow: rgba(14, 14, 14, 0.6) 5px 5px 35px -3px;
+    display: flex;
+    align-items: center;
+}
+
+.vertical-text {
+    margin-right: 1rem;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 1.8rem;
+    font-weight: bold;
+    line-height: 1.5;
+    text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.leaderboard-chart-container {
+    flex-grow: 1;
+}
+
+.progress-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-52.2%, -35%); /* Raising the left number moves the circle left. Raising the right number moves the circle up. */
+    border-radius: 50%;
+    height: 208px;
+    width: 208px;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+}
+
+/* Progress meter uses CSS sourced from the following YouTube video: https://www.youtube.com/watch?v=t7eHSAXW718 */
+
+.percent {
+    position: relative;
+    width: 208px;
+    height: 208px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.percent .number {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.percent .number h2 {
+    color: #fff;
+    font-family: "Chakra Petch", sans-serif;
+    font-weight: 700;
+    font-size: 3rem;
+    margin: 0;
+    transform: translate(8px)
+
+}
+
+.percent .number h2 span {
+    font-size: 3rem;
+    color: #fff;
+}
+
+svg {
+    position: absolute;
+    width: 208px;
+    height: 208px;
+    z-index: 0;
+}
+
+circle {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: #191919;
+    stroke-width: 10;
+    stroke-linecap: round;
+    transform: rotate(-90deg) translate(4px, 4px);
+    transform-origin: 50% 50%;
+}
+
+circle:nth-child(2) {
+    stroke-dasharray: 565.48;
+    stroke-dashoffset: calc(565.48 - (565.48 * var(--percentage)) / 100);
+    stroke: #1b76ff;
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+/* Streak Card Styling */
+.streak-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: var(--text-color);
+    font-family: "Orbitron", sans-serif;
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.streak-card p {
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+    margin-top: 0;
+}
+
+.streak-card h2 {
+    margin-top: 1rem;
+    margin-bottom: 0rem;
+    font-size: 1.9rem;
+    color: var(--accent-color-1);
+}
+
+.streak-card i {
+    font-size: 3.5rem;
+    color: var(--accent-color-1);
+    translate: 0px;
+    margin: 0;
+    margin-bottom: 1rem;
+}
+
+.streak-card .fa-snowflake {
+    color: #00bfff;
+}
+
+.streak-card .fa-fire {
+    color: #ff4500;
+}
+
+.streak-card .fa-fire-flame-curved {
+    color: #ff6347;
 }
