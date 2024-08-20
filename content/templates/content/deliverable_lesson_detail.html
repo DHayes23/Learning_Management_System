@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="lesson-detail-container">
+    <a href="{{ module_url }}" class="primary-button">
+        <i class="back-icon fa-sharp fa-arrow-left"></i>Back
+    </a>
+
+    <h1>{{ lesson.name }}</h1>
+    <p>{{ lesson.description }}</p>
+    <div class="lesson-content">
+        {{ lesson.content|safe }}
+    </div>
+    <div class="lesson-instructions">
+        <p>Please submit your deliverable via email to <a href="mailto:{{ lesson.recipient_email }}">{{ lesson.recipient_email }}</a>.</p>
+        {% if lesson.due_date %}
+            <p><strong>Due Date:</strong> {{ lesson.due_date }}</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

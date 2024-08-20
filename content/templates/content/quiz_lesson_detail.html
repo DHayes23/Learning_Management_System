@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="lesson-detail-container">
+    <a href="{{ module_url }}" class="primary-button">
+        <i class="back-icon fa-sharp fa-arrow-left"></i>Back
+    </a>
+
+    <h1>{{ lesson.name }}</h1>
+    <p>{{ lesson.description }}</p>
+    <div class="lesson-content">
+        {{ lesson.content|safe }}
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        {% for question in lesson.quiz_questions.all %}
+            <div class="quiz-question">
+                <p>{{ question.question_text }}</p>
+                <input type="radio" name="question_{{ question.pk }}" value="1"> {{ question.correct_answer }}<br>
+                <input type="radio" name="question_{{ question.pk }}" value="2"> {{ question.incorrect_answer_1 }}<br>
+                {% if question.incorrect_answer_2 %}
+                    <input type="radio" name="question_{{ question.pk }}" value="3"> {{ question.incorrect_answer_2 }}<br>
+                {% endif %}
+                {% if question.incorrect_answer_3 %}
+                    <input type="radio" name="question_{{ question.pk }}" value="4"> {{ question.incorrect_answer_3 }}<br>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="primary-button">Submit Quiz</button>
+    </form>
+</div>
+{% endblock %}

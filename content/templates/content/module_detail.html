@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="module-detail-container">
-    <a href="{{ request.META.HTTP_REFERER }}" class="primary-button">
+    <a href="{% url 'profile' %}" class="primary-button">
         <i class="back-icon fa-sharp fa-arrow-left"></i>Back
     </a>
 
@@ -11,21 +11,23 @@
 
     <div class="lessons-card-grid">
         {% for lesson in lessons %}
-            <div class="lesson-card {% if lesson.is_completed %}completed{% endif %}">
-                {% if lesson.is_completed %}
-                    <div class="lesson-completed-icon">
-                        <i class="fa-sharp fa-light fa-circle-check"></i>
-                    </div>
-                {% endif %}
-                <h3>{{ lesson.name }}</h3>
-                <p class="lesson-description">{{ lesson.description }}</p>
-                <ul class="lesson-details">
-                    <li><strong>Type:</strong> {{ lesson.get_lesson_type_display }}</li>
-                    <li><strong>Points:</strong> {{ lesson.points }}</li>
-                    <li><strong>Difficulty:</strong> {{ lesson.get_difficulty_display }}</li>
-                    <li><strong>Time to Complete:</strong> {{ lesson.time_to_complete }} minutes</li>
-                </ul>
-            </div>
+            <a href="{{ lesson.url }}" class="lesson-card-link">
+                <div class="lesson-card {% if lesson.is_completed %}completed{% endif %}">
+                    {% if lesson.is_completed %}
+                        <div class="lesson-completed-icon">
+                            <i class="fa-sharp fa-light fa-circle-check"></i>
+                        </div>
+                    {% endif %}
+                    <h3>{{ lesson.name }}</h3>
+                    <p class="lesson-description">{{ lesson.description }}</p>
+                    <ul class="lesson-details">
+                        <li><strong>Type:</strong> {{ lesson.get_lesson_type_display }}</li>
+                        <li><strong>Points:</strong> {{ lesson.points }}</li>
+                        <li><strong>Difficulty:</strong> {{ lesson.get_difficulty_display }}</li>
+                        <li><strong>Time to Complete:</strong> {{ lesson.time_to_complete }} minutes</li>
+                    </ul>
+                </div>
+            </a>
         {% endfor %}
     </div>
 </div>

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="lesson-detail-container">
+    <a href="{{ module_url }}" class="primary-button">
+        <i class="back-icon fa-sharp fa-arrow-left"></i>Back
+    </a>
+
+    <h1>{{ lesson.name }}</h1>
+    <p>{{ lesson.description }}</p>
+    <div class="lesson-content">
+        {{ lesson.content|safe }}
+    </div>
+</div>
+{% endblock %}
