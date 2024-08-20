@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from content.models import Path, Module, StudentProgress
 from django.utils import timezone
 from datetime import timedelta
+import json
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -29,6 +30,7 @@ class Profile(models.Model):
     points = models.PositiveIntegerField(default=0)
     daily_streak = models.PositiveIntegerField(default=0)
     last_completion_date = models.DateField(null=True, blank=True)
+    badges = models.TextField(default="[]")
 
     def __str__(self):
         return self.user.username
@@ -65,3 +67,13 @@ class Profile(models.Model):
             self.daily_streak = 1
         self.last_completion_date = today
         self.save(update_fields=['daily_streak', 'last_completion_date'])
+
+    def get_badges(self):
+        return json.loads(self.badges)
+
+    def award_badge(self, badge_name):
+        badges = self.get_badges()
+        if badge_name not in badges:
+            badges.append(badge_name)
+            self.badges = json.dumps(badges)
+            self.save(update_fields=['badges'])
