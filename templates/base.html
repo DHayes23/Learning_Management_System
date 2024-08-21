@@ -61,7 +61,7 @@
                 <!-- Second set of nav items -->
                 {% if user_role == 'trainer' or user_role == 'manager' %}
                   <li class="nav-item">
-                    <a class="nav-link mx-3" href="{% url 'profile' %}"><i class="fa-sharp fa-solid fa-chart-user"></i> Student Metrics</a>
+                    <a class="nav-link mx-3" href="/admin"><i class="fa-sharp fa-solid fa-chart-user"></i>Admin Console</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link mx-3" href="/admin/content/"><i class="fa-sharp fa-solid fa-file-pen"></i> Manage Content</a>
@@ -77,9 +77,6 @@
                 <li class="nav-divider"></li>
 
                 <!-- Third set of nav items -->
-                <li class="nav-item">
-                  <a class="nav-link mx-3" href="{% url 'profile' %}"><i class="fa-sharp fa-solid fa-gears"></i> Settings</a>
-                </li>
                 <li class="nav-item">
                   <form id="logout-form" method="post" action="{% url 'account_logout' %}">
                     {% csrf_token %}
