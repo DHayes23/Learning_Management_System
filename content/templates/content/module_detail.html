@@ -11,7 +11,11 @@
 
     <div class="lessons-card-grid">
         {% for lesson in lessons %}
-            <a href="{{ lesson.url }}" class="lesson-card-link">
+            {% if lesson.lesson_type == 'quiz' %}
+                <a href="{% url 'quiz_lesson_detail' lesson.pk %}?module_id={{ module.pk }}" class="lesson-card-link">
+            {% else %}
+                <a href="{{ lesson.url }}" class="lesson-card-link">
+            {% endif %}
                 <div class="lesson-card {% if lesson.is_completed %}completed{% endif %}">
                     {% if lesson.is_completed %}
                         <div class="lesson-completed-icon">

@@ -1123,3 +1123,56 @@ circle:nth-child(2) {
     color: var(--text-color);
     height: 150px;
 }
+
+.quiz-results-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 800px;
+}
+
+.quiz-results-container {
+    background-color: var(--background-color-dark);
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+
+.quiz-results-heading {
+    font-family: "Orbitron", sans-serif;
+    color: var(--accent-color-2);
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.quiz-score-1 {
+    font-family: "Orbitron", sans-serif;
+    font-size: 2rem;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+}
+
+.quiz-score-2 {
+    font-family: "Orbitron", sans-serif;
+    font-size: 2rem;
+    color: var(--accent-color-1);
+    margin-bottom: 1.5rem;
+}
+
+.quiz-pass-message {
+    font-family: "Comfortaa", monospace;
+    color: var(--accent-color-2);
+    font-size: 1.7rem;
+    margin-bottom: 2rem;
+}
+
+.quiz-fail-message {
+    font-family: "Comfortaa", monospace;
+    color: red;
+    font-size: 1.7rem;
+    margin-bottom: 2rem;
+}
