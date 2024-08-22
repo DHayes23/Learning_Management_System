@@ -26,12 +26,17 @@
                 <iframe width="560" height="315" src="{{ embed_url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
             {% else %}
-            <p>A video URL has not been assigned to this lesson. Please contact an administrator and inform them of this error.</p>
+            <div class="missing-video-text">
+                <p>A video URL has not been assigned to this lesson. Please contact an administrator and inform them of this error.</p>
+            </div>
             {% endif %}
         </div>
 
         <div class="lesson-detail-video-container-area-4">
-            <button class="primary-button submit-button">Complete Lesson</button>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="primary-button">Complete Lesson</button>
+            </form>
         </div>
     </div>
 </div>

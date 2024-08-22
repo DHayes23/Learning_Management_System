@@ -21,7 +21,10 @@
             </div>
         </div>
         <div class="lesson-detail-text-container-area-3">
-            <button class="primary-button">Complete Lesson</button>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="primary-button">Complete Lesson</button>
+            </form>
         </div>
     </div>
 </div>

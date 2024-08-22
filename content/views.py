@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.urls import reverse 
 from .models import Path, Module, StudentProgress, Lesson, Question
+from django.utils import timezone
 
 
 def path_detail(request, pk):
@@ -57,32 +58,43 @@ def module_detail(request, pk):
 
 def text_lesson_detail(request, pk):
     lesson = get_object_or_404(Lesson, pk=pk)
-
     module_url = reverse('module_detail', args=[lesson.modules.first().pk])
-
     user_profile = request.user.profile
+
+    if request.method == 'POST':
+        progress, created = StudentProgress.objects.get_or_create(student=request.user, lesson=lesson)
+        if not progress.completed:
+            progress.completed = True
+            progress.date_completed = timezone.now()
+            progress.points = lesson.points
+            progress.save()
+        return redirect(module_url)
 
     context = {
         'lesson': lesson,
         'module_url': module_url,
         'user_role': user_profile.role,
     }
-
     return render(request, 'content/text_lesson_detail.html', context)
 
 def video_lesson_detail(request, pk):
     lesson = get_object_or_404(Lesson, pk=pk)
-
-    # Handle the case where the video URL is missing
     if lesson.video_url and 'youtube.com/watch' in lesson.video_url:
         video_id = lesson.video_url.split('v=')[1]
         embed_url = f'https://www.youtube.com/embed/{video_id}'
     else:
         embed_url = None
-
     module_url = reverse('module_detail', args=[lesson.modules.first().pk])
-
     user_profile = request.user.profile
+
+    if request.method == 'POST':
+        progress, created = StudentProgress.objects.get_or_create(student=request.user, lesson=lesson)
+        if not progress.completed:
+            progress.completed = True
+            progress.date_completed = timezone.now()
+            progress.points = lesson.points
+            progress.save()
+        return redirect(module_url)
 
     context = {
         'lesson': lesson,
@@ -90,23 +102,28 @@ def video_lesson_detail(request, pk):
         'module_url': module_url,
         'user_role': user_profile.role,
     }
-
     return render(request, 'content/video_lesson_detail.html', context)
 
 
 def deliverable_lesson_detail(request, pk):
     lesson = get_object_or_404(Lesson, pk=pk)
-
     module_url = reverse('module_detail', args=[lesson.modules.first().pk])
-
     user_profile = request.user.profile
+
+    if request.method == 'POST':
+        progress, created = StudentProgress.objects.get_or_create(student=request.user, lesson=lesson)
+        if not progress.completed:
+            progress.completed = True
+            progress.date_completed = timezone.now()
+            progress.points = lesson.points
+            progress.save()
+        return redirect(module_url)
 
     context = {
         'lesson': lesson,
         'module_url': module_url,
         'user_role': user_profile.role,
     }
-
     return render(request, 'content/deliverable_lesson_detail.html', context)
 
 
