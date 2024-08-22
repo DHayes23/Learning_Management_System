@@ -39,6 +39,25 @@ class ProfileModelTest(TestCase):
         ]
         self.assertEqual(cohort_choices, expected_choices, "Cohort choices should be present as defined.")
 
+    def test_profile_update_points(self):
+        # Test updating points on profile when lessons are completed
+        user = User.objects.create(username='testuser', password='testpassword')
+        profile = user.profile
+        lesson = Lesson.objects.create(name='Lesson 1', lesson_type='text', points=10)
+        StudentProgress.objects.create(student=user, lesson=lesson, completed=True, points=lesson.points)
+        
+        self.assertEqual(profile.points, 10, "Profile points should update when lesson is completed.")
+
+    def test_award_badge(self):
+        # Test awarding a badge to a user profile
+        user = User.objects.create(username='testuser', password='testpassword')
+        profile = user.profile
+        badge_name = "First Completion"
+        profile.award_badge(badge_name)
+
+        badges = profile.get_badges()
+        self.assertIn(badge_name, badges, "Badge should be awarded to the profile.")
+
 class StudentProgressTest(TestCase):
 
     def setUp(self):

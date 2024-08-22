@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 import json
 
 class Path(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    description = models.TextField(blank=True, null=True)
+    name = models.CharField(max_length=60, unique=True)
+    description = models.TextField(blank=True, null=True, max_length=300)
     modules = models.ManyToManyField('Module', related_name='paths', blank=True)
 
     def is_completed_by_student(self, student):
@@ -16,7 +16,7 @@ class Path(models.Model):
         return self.name
 
 class Module(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=60, unique=True)
     description = models.TextField(blank=True, null=True)
     lessons = models.ManyToManyField('Lesson', related_name='modules', blank=True)
 
@@ -53,8 +53,8 @@ class Lesson(models.Model):
     ]
     
     # Generic lesson fields
-    name = models.CharField(max_length=255, unique=True)
-    description = models.TextField(blank=True, null=True)
+    name = models.CharField(max_length=60, unique=True)
+    description = models.TextField(blank=True, null=True, max_length=300)
     lesson_type = models.CharField(max_length=20, choices=LESSON_TYPES, blank=True, null=True)
     content = models.TextField(blank=True, null=True)
     points = models.PositiveIntegerField(default=0)

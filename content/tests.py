@@ -105,3 +105,44 @@ class ContentModelTest(TestCase):
         self.assertIn(lesson, module1.lessons.all(), "Lesson should be in Module 1.")
         self.assertIn(lesson, module2.lessons.all(), "Lesson should be in Module 2.")
         self.assertEqual(lesson.modules.count(), 2, "Lesson should be associated with two modules.")
+
+    def test_lesson_without_quiz_questions(self):
+        # Test that a lesson of type quiz without questions handles the case gracefully
+        lesson = Lesson.objects.create(name='Lesson Quiz', lesson_type='quiz', passing_percentage=70)
+        self.assertEqual(lesson.quiz_questions.count(), 0, "Quiz should start with no questions.")
+        self.assertFalse(lesson.quiz_questions.exists(), "No questions should be linked to the quiz lesson initially.")
+
+    def test_question_creation(self):
+        # Test the creation of a question and its string representation
+        question = Question.objects.create(
+            question_text="What is the capital of France?",
+            correct_answer="Paris",
+            incorrect_answer_1="Berlin",
+            incorrect_answer_2="Rome",
+            incorrect_answer_3="Madrid"
+        )
+        self.assertEqual(str(question), "What is the capital of France?", "Question should be created with the correct text.")
+        self.assertEqual(question.correct_answer, "Paris", "Correct answer should be 'Paris'.")
+
+    def test_lesson_difficulty_level(self):
+        # Test that the difficulty level is set correctly and defaults to 'medium'
+        lesson = Lesson.objects.create(name='Lesson 1', lesson_type='text')
+        self.assertEqual(lesson.difficulty, 'medium', "The default difficulty level should be 'medium'.")
+        lesson.difficulty = 'hard'
+        lesson.save()
+        self.assertEqual(lesson.difficulty, 'hard', "The difficulty level should be updated to 'hard'.")
+
+    def test_path_str_representation(self):
+        # Test the string representation of the Path model
+        path = Path.objects.create(name='Path 1')
+        self.assertEqual(str(path), 'Path 1', "Path __str__ should return the path name.")
+
+    def test_module_str_representation(self):
+        # Test the string representation of the Module model
+        module = Module.objects.create(name='Module 1')
+        self.assertEqual(str(module), 'Module 1', "Module __str__ should return the module name.")
+
+    def test_lesson_str_representation(self):
+        # Test the string representation of the Lesson model
+        lesson = Lesson.objects.create(name='Lesson 1', lesson_type='text')
+        self.assertEqual(str(lesson), 'Lesson 1 (Text Based)', "Lesson __str__ should return the lesson name and type.")
