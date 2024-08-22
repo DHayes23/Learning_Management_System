@@ -978,3 +978,81 @@ circle:nth-child(2) {
     background-size: 10px;
     background-position: center;
 }
+
+.lesson-detail-video-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: 160px 390px 200px;
+    gap: 0px;
+    height: 100%;
+    width: 100%;
+    padding-left: 0rem;
+    padding-right: 0rem;
+}
+
+.lesson-detail-video-container-area-1 { 
+    grid-area: 1 / 2 / 2 / 7;
+    border: 5px solid var(--background-color-dark);
+    background-color: var(--background-color-main);
+    padding: 20px;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom: none;
+    background-image: url("/static/media/images/Texture14.png");
+    background-size: 10px;
+    background-position: center;
+    color: var(--text-color);
+    font-family: "Comfortaa", monospace;
+    height: 160px;
+    overflow-y: hidden;
+}
+
+.lesson-detail-video-container-area-2 { 
+    grid-area: 2 / 2 / 3 / 4;
+    border: 5px solid var(--background-color-dark);
+    background-color: var(--background-color-main);
+    padding: 20px;
+    overflow-y: auto;
+    color: var(--text-color);
+    font-family: "Comfortaa", monospace;
+    height: 390px;
+}
+
+.lesson-detail-video-container-area-3 { 
+    grid-area: 2 / 4 / 3 / 7;
+    border: 5px solid var(--background-color-dark);
+    border-left: none;
+    background-color: var(--background-color-main);
+    overflow: hidden;
+    color: var(--text-color);
+    font-family: "Comfortaa", monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 390px;
+}
+
+.lesson-video iframe {
+    width: 670px;
+    height: 390px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.lesson-detail-video-container-area-4 { 
+    grid-area: 3 / 2 / 4 / 7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 5px solid var(--background-color-dark);
+    border-top: none;
+    background-color: var(--background-color-main);
+    padding: 20px;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    background-image: url("/static/media/images/Texture14.png");
+    background-size: 10px;
+    background-position: center;
+    color: var(--text-color);
+    height: 150px;
+}
