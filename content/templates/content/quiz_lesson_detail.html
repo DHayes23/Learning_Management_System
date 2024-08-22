@@ -1,27 +1,54 @@
 {% extends "base.html" %}
 
 {% block content %}
+<h1 class="quiz-lesson-heading">{{ lesson.name }}</h1>
+
 <div class="lesson-detail-container">
-    <a href="{{ module_url }}" class="primary-button">
+    <a href="{{ module_url }}" class="primary-button back-button">
         <i class="back-icon fa-sharp fa-arrow-left"></i>Back
     </a>
-
-    <h1>{{ lesson.name }}</h1>
-    <p>{{ lesson.description }}</p>
-    <div class="lesson-content">
-        {{ lesson.content|linebreaksbr }}
-    </div>
-    <form method="post">
-        {% csrf_token %}
-        {% for item in questions %}
-            <div class="quiz-question">
-                <p>{{ item.question.question_text }}</p>
-                {% for answer in item.answers %}
-                    <input type="radio" name="question_{{ item.question.pk }}" value="{{ answer }}" required> {{ answer }}<br>
-                {% endfor %}
+    <div class="quiz-lesson-container">
+        <div class="quiz-grid-container">
+            <div class="quiz-instructions">
+                <h2 class="quiz-instructions-heading">Instructions</h2>
+                <p>{{ lesson.description }}</p>
+                <div class="quiz-content">
+                    <h2 class="quiz-instructions-heading">Content</h2>
+                    {{ lesson.content|linebreaksbr }}
+                </div>
             </div>
-        {% endfor %}
-        <button type="submit" class="primary-button">Submit Quiz</button>
-    </form>
+
+            <div class="quiz-question-area">
+                <form method="post" id="quiz-form">
+                    {% csrf_token %}
+                    <div class="quiz-question-container">
+                        {% for item in questions %}
+                            <div class="quiz-question" data-question="{{ forloop.counter0 }}" style="{% if forloop.first %}display: block;{% else %}display: none;{% endif %}">
+                                <p class="quiz-question-text">{{ item.question.question_text }}</p>
+                                {% for answer in item.answers %}
+                                    <div class="quiz-answer-option">
+                                        <input type="radio" id="answer_{{ forloop.counter0 }}_{{ forloop.counter }}" name="question_{{ item.question.pk }}" value="{{ answer }}" required>
+                                        <label for="answer_{{ forloop.counter0 }}_{{ forloop.counter }}">{{ answer }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+            </div>
+
+            <div class="quiz-navigation-area">
+                <div class="quiz-navigation">
+                    <button type="button" class="primary-button" id="prev-btn" disabled>Previous</button>
+                    <button type="button" class="primary-button" id="next-btn">Next</button>
+                </div>
+                <div id="submit-container" class="quiz-submit-container" style="display: none;">
+                    <button type="submit" class="primary-button">Submit Quiz</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+
 {% endblock %}

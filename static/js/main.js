@@ -354,3 +354,33 @@ function toggleModules(pathId) {
         }, 100);
     }
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    const questions = document.querySelectorAll('.quiz-question');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitContainer = document.getElementById('submit-container');
+    let currentQuestion = 0;
+
+    function showQuestion(index) {
+        questions[currentQuestion].style.display = 'none';
+        questions[index].style.display = 'block';
+        currentQuestion = index;
+
+        prevBtn.disabled = currentQuestion === 0;
+        nextBtn.style.display = currentQuestion === questions.length - 1 ? 'none' : 'inline-block';
+        submitContainer.style.display = currentQuestion === questions.length - 1 ? 'inline-block' : 'none';
+    }
+
+    prevBtn.addEventListener('click', function() {
+        if (currentQuestion > 0) {
+            showQuestion(currentQuestion - 1);
+        }
+    });
+
+    nextBtn.addEventListener('click', function() {
+        if (currentQuestion < questions.length - 1) {
+            showQuestion(currentQuestion + 1);
+        }
+    });
+});

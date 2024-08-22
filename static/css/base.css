@@ -1176,3 +1176,96 @@ circle:nth-child(2) {
     font-size: 1.7rem;
     margin-bottom: 2rem;
 }
+
+.quiz-lesson-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--background-color-dark);
+    background-image: url("/static/media/images/Texture2.png");
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 15px;
+}
+
+.quiz-lesson-heading {
+    font-family: "Orbitron", sans-serif;
+    color: var(--text-color);
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.quiz-grid-container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 2rem;
+    height: 100%;
+}
+
+.quiz-instructions {
+    background-color: var(--background-color-main);
+    background-image: url("/static/media/images/Texture15.png");
+    padding: 1.5rem;
+    border-radius: 30px;
+    color: var(--text-color);
+    font-family: "Comfortaa", monospace;
+    text-align: left;
+}
+
+.quiz-instructions-heading {
+    font-family: "Orbitron", sans-serif;
+    color: var(--accent-color-1);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.quiz-question-area {
+    background-color: var(--background-color-main);
+    background-image: url("/static/media/images/Texture15.png");
+    padding: 1.5rem;
+    border-radius: 30px;
+    overflow-y: auto;
+    height: 300px;
+}
+
+.quiz-question-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.quiz-question {
+    display: none;
+}
+
+.quiz-question-text {
+    font-family: "Comfortaa", monospace;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.quiz-answer-option {
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.quiz-answer-option input[type="radio"] {
+    margin-right: 1rem;
+}
+
+.quiz-navigation-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.quiz-navigation {
+    display: flex;
+    gap: 1rem;
+}
+
+.quiz-submit-container {
+    text-align: center;
+    margin-top: 1rem;
+}
