@@ -2,20 +2,37 @@
 
 {% block content %}
 <div class="lesson-detail-container">
-    <a href="{{ module_url }}" class="primary-button">
+    <a href="{{ module_url }}" class="primary-button back-button">
         <i class="back-icon fa-sharp fa-arrow-left"></i>Back
     </a>
 
-    <h1>{{ lesson.name }}</h1>
-    <p>{{ lesson.description }}</p>
-    <div class="lesson-content">
-        {{ lesson.content|safe }}
-    </div>
-    <div class="lesson-instructions">
-        <p>Please submit your deliverable via email to <a href="mailto:{{ lesson.recipient_email }}">{{ lesson.recipient_email }}</a>.</p>
-        {% if lesson.due_date %}
-            <p><strong>Due Date:</strong> {{ lesson.due_date }}</p>
-        {% endif %}
+    <h1 class="lesson-heading">{{ lesson.name }}</h1>
+    <div class="lesson-detail-deliverable-container">
+        <div class="lesson-detail-deliverable-container-area-1">
+            <h2 class="lesson-container-heading">Lesson Description</h2>
+            <p>{{ lesson.description }}</p>
+        </div>
+
+        <div class="lesson-detail-deliverable-container-area-2">
+            <h2 class="lesson-container-heading">Lesson Content</h2>
+            <div class="lesson-content">
+                {{ lesson.content|linebreaksbr }}
+            </div>
+        </div>
+
+        <div class="lesson-detail-deliverable-container-area-3">
+            <h2 class="lesson-container-heading">Submission Instructions</h2>
+            <div class="lesson-instructions">
+                <p>Please submit your deliverable via email to <a href="mailto:{{ lesson.recipient_email }}">{{ lesson.recipient_email }}</a>.</p>
+                {% if lesson.due_date %}
+                    <p><strong>Due Date:</strong> {{ lesson.due_date }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="lesson-detail-deliverable-container-area-4">
+            <button class="primary-button">Complete Lesson</button>
+        </div>
     </div>
 </div>
 {% endblock %}
