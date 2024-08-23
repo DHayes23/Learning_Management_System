@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch: # Allow manual triggering of pipeline
 
 jobs:
   test:
@@ -34,7 +35,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Check out the repository
+      - name: Checkout the code
         uses: actions/checkout@v2
 
       - name: Install Heroku CLI
@@ -45,5 +46,5 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           heroku auth:token
-          heroku git:remote -a 
+          heroku git:remote -a your-heroku-app-name
           git push heroku main
