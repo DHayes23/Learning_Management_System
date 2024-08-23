@@ -203,3 +203,184 @@ document.addEventListener('DOMContentLoaded', function () {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 });
+
+
+// Used to handle the GSAP animations of the Path display
+function toggleModules(pathId) {
+    var modulesContainer = document.getElementById('modules-' + pathId);
+    var selectedCard = document.getElementById('card-' + pathId);
+    var titleElement = document.getElementById('title-' + pathId);
+    var viewModulesButton = document.getElementById('button-' + pathId);
+    var allCards = document.querySelectorAll('.path-card');
+    var gridContainer = document.querySelector('.path-card-grid');
+    var heading = document.getElementById('assigned-paths-heading');
+    var body = document.body;
+    var contentArea = document.querySelector('.content-area');
+    var isSelected = modulesContainer.classList.contains('show');
+
+    viewModulesButton.style.pointerEvents = 'none';
+    viewModulesButton.style.opacity = '0.6';
+
+    if (isSelected) {
+        var tlClose = gsap.timeline({
+            onComplete: function () {
+                gsap.to(selectedCard, {
+                    duration: 1.5,
+                    width: selectedCard.dataset.originalWidth,
+                    height: selectedCard.dataset.originalHeight,
+                    padding: "1.5rem 1.5rem 2rem 1.5rem",
+                    left: selectedCard.dataset.originalLeft,
+                    top: selectedCard.dataset.originalTop,
+                    onComplete: function () {
+                        gsap.set(selectedCard, { position: '', clearProps: 'all' });
+                        gridContainer.style.width = '';
+                        gridContainer.style.height = '';
+                        gridContainer.style.gridTemplateColumns = '';
+                        gsap.to(allCards, { duration: 0.5, opacity: 1, transform: "translate(0, 0)", clearProps: 'all' });
+                        gsap.to(heading, { duration: 0.5, y: "0px", opacity: 1 });
+                        viewModulesButton.style.pointerEvents = 'auto';
+                        viewModulesButton.style.opacity = '';
+                    }
+                });
+            }
+        });
+
+        tlClose.to(modulesContainer.querySelectorAll('li'), {
+            duration: 0.5,
+            opacity: 0,
+            y: "-20px",
+            stagger: { each: 0.1, from: "end" },
+            onComplete: function () {
+                modulesContainer.style.display = 'none';
+                modulesContainer.classList.remove('show');
+            }
+        }).to(titleElement, {
+            duration: 0.5,
+            fontSize: "1.5rem",
+            ease: "power1.out",
+        }, "-=0.3");
+
+        tlClose.to(viewModulesButton, {
+            duration: 0.5,
+            width: "auto", 
+            onComplete: function () {
+                viewModulesButton.innerHTML = 'View Modules';
+            }
+        });
+
+        body.style.overflow = ''; 
+    } else {
+        gsap.to(heading, { duration: 0.5, y: "-100px", opacity: 0 });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        setTimeout(function () {
+            body.style.overflow = 'hidden';
+
+            gridContainer.style.width = gridContainer.offsetWidth + 'px';
+            gridContainer.style.height = gridContainer.offsetHeight + 'px';
+            gridContainer.style.gridTemplateColumns = getComputedStyle(gridContainer).gridTemplateColumns;
+
+            allCards.forEach(function (card) {
+                if (card !== selectedCard) {
+                    gsap.to(card, { duration: 1, transform: "translateY(200%)", opacity: 0 });
+                }
+            });
+
+            var cardRect = selectedCard.getBoundingClientRect();
+            var contentRect = contentArea.getBoundingClientRect();
+
+            selectedCard.dataset.originalLeft = cardRect.left + 'px';
+            selectedCard.dataset.originalTop = cardRect.top + 'px';
+            selectedCard.dataset.originalWidth = cardRect.width + 'px';
+            selectedCard.dataset.originalHeight = cardRect.height + 'px';
+
+            var contentCenterX = contentRect.left + contentRect.width / 2;
+            var contentCenterY = contentRect.top + contentRect.height / 2;
+
+            var newWidth = cardRect.width * 2;
+            var newHeight = window.innerHeight * 0.9;
+            var newLeft = contentCenterX - newWidth / 2;
+            var newTop = contentCenterY - newHeight / 2 - 50;
+
+            selectedCard.dataset.centerLeft = newLeft + 'px';
+            selectedCard.dataset.centerTop = newTop + 'px';
+            selectedCard.dataset.newWidth = newWidth + 'px';
+            selectedCard.dataset.newHeight = newHeight + 'px';
+
+            gsap.set(selectedCard, { position: 'fixed', left: cardRect.left, top: cardRect.top, width: cardRect.width, height: cardRect.height });
+
+            gsap.to(viewModulesButton, {
+                duration: 0.5,
+                width: "auto", 
+                onComplete: function () {
+                    viewModulesButton.innerHTML = '<i class="back-icon fa-sharp fa-arrow-left"></i>Back';
+                }
+            });
+
+            var tlOpen = gsap.timeline();
+
+            tlOpen.to(selectedCard, {
+                duration: 1,
+                width: newWidth,
+                height: newHeight,
+                left: newLeft,
+                top: newTop,
+                padding: "2rem",
+            });
+
+            tlOpen.to(modulesContainer, {
+                display: 'block',
+                onStart: function() {
+                    gsap.fromTo(modulesContainer.querySelectorAll('li'), 
+                        { opacity: 0, y: "-50px" },  
+                        { duration: 1.5, opacity: 1, y: "0px", stagger: { each: 0.25, from: "start" }, ease: "power1.out" }
+                    );
+                    modulesContainer.classList.add('show');
+                }
+            }, "-=0.5");
+
+            tlOpen.to(titleElement, {
+                duration: 0.5,
+                fontSize: "2.5rem",
+                ease: "power1.out",
+            }, "-=0.5");
+
+            tlOpen.call(function() {
+                viewModulesButton.style.pointerEvents = 'auto';
+                viewModulesButton.style.opacity = '';
+            });
+
+        }, 100);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const questions = document.querySelectorAll('.quiz-question');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitContainer = document.getElementById('submit-container');
+    let currentQuestion = 0;
+
+    function showQuestion(index) {
+        questions[currentQuestion].style.display = 'none';
+        questions[index].style.display = 'block';
+        currentQuestion = index;
+
+        prevBtn.disabled = currentQuestion === 0;
+        nextBtn.style.display = currentQuestion === questions.length - 1 ? 'none' : 'inline-block';
+        submitContainer.style.display = currentQuestion === questions.length - 1 ? 'inline-block' : 'none';
+    }
+
+    prevBtn.addEventListener('click', function() {
+        if (currentQuestion > 0) {
+            showQuestion(currentQuestion - 1);
+        }
+    });
+
+    nextBtn.addEventListener('click', function() {
+        if (currentQuestion < questions.length - 1) {
+            showQuestion(currentQuestion + 1);
+        }
+    });
+});

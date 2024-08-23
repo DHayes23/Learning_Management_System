@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="lesson-detail-container">
+    <a href="{{ module_url }}" class="primary-button back-button">
+        <i class="back-icon fa-sharp fa-arrow-left"></i>Back
+    </a>
+
+    <h1 class="lesson-heading">{{ lesson.name }}</h1>
+    <div class="lesson-detail-video-container">
+        <div class="lesson-detail-video-container-area-1">
+            <h2 class="lesson-container-heading">Lesson Description</h2>
+            <p>{{ lesson.description }}</p>
+        </div>
+
+        <div class="lesson-detail-video-container-area-2">
+            <h2 class="lesson-container-heading">Additional Content</h2>
+            <div class="lesson-content">
+                {{ lesson.content|linebreaksbr }}
+            </div>
+        </div>
+
+        <div class="lesson-detail-video-container-area-3">
+            {% if embed_url %}
+            <div class="lesson-video">
+                <iframe width="560" height="315" src="{{ embed_url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            {% else %}
+            <div class="missing-video-text">
+                <p>A video URL has not been assigned to this lesson. Please contact an administrator and inform them of this error.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="lesson-detail-video-container-area-4">
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="primary-button">Complete Lesson</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
