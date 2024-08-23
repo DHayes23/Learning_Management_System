@@ -35,32 +35,14 @@ jobs:
           python manage.py test
 
   deploy:
-    needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
     steps:
-      - name: Checkout the code
-        uses: actions/checkout@v2
-
-      - name: Install Heroku CLI
-        run: curl https://cli-assets.heroku.com/install.sh | sh
-
-      - name: Authenticate with Heroku
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: echo $HEROKU_API_KEY | heroku auth:token
-
-      - name: Deploy to Heroku
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: |
-          heroku git:remote -a dh-learning-management-system
-          git remote -v
-          git push heroku main
-
-      - name: Release the app
-        run: heroku releases:info -a dh-learning-management-system
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "dh-learning-management-system"
+          heroku_email: "d.hayesacademy23@gmail.com"
 
 
 
