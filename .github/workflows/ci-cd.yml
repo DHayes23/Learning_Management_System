@@ -46,17 +46,21 @@ jobs:
       - name: Install Heroku CLI
         run: curl https://cli-assets.heroku.com/install.sh | sh
 
-      - name: Set up Heroku authentication
+      - name: Authenticate with Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: echo $HEROKU_API_KEY | heroku auth:token
+
+      - name: Deploy to Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          echo "machine api.heroku.com login $HEROKU_API_KEY password $HEROKU_API_KEY" > ~/.netrc
-          echo "machine git.heroku.com login $HEROKU_API_KEY password $HEROKU_API_KEY" >> ~/.netrc
-          chmod 600 ~/.netrc
+          heroku git:remote -a dh-learning-management-system
+          git remote -v
+          git push heroku main
 
-      - name: Deploy to Heroku
-        run: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/dh-learning-management-system.git HEAD:main
-
+      - name: Release the app
+        run: heroku releases:info -a dh-learning-management-system
 
 
 
