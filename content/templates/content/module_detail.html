@@ -17,11 +17,6 @@
                 <a href="{{ lesson.url }}" class="lesson-card-link">
             {% endif %}
                 <div class="lesson-card {% if lesson.is_completed %}completed{% endif %}">
-                    {% if lesson.is_completed %}
-                        <div class="lesson-completed-icon">
-                            <i class="fa-sharp fa-light fa-circle-check"></i>
-                        </div>
-                    {% endif %}
                     <h3>{{ lesson.name }}</h3>
                     <p class="lesson-description">{{ lesson.description }}</p>
                     <ul class="lesson-details">
