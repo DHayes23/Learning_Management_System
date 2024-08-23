@@ -51,5 +51,5 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           heroku auth:token
-          heroku git:remote -a your-heroku-app-name
+          heroku git:remote -a dh-learning-management-system
           git push heroku main
