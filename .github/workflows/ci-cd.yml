@@ -1,11 +1,10 @@
 name: Django CI/CD
 
-# Triggers on push to main
 on:
   push:
     branches:
       - main
-  workflow_dispatch: # Allow manual triggering of pipeline
+  workflow_dispatch:
 
 jobs:
   test:
@@ -24,6 +23,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Run collectstatic
+        env:
+          DJANGO_SETTINGS_MODULE: learning-management-system.settings
+        run: |
+          python manage.py collectstatic --noinput
 
       - name: Run tests
         run: |
