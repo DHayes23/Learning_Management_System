@@ -4,3 +4,4 @@ Django==5.0.7
 django-allauth==64.0.0
 sqlparse==0.5.1
 whitenoise==6.7.0
+psycopg2-binary>=2.9.1
