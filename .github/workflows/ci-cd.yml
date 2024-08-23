@@ -36,6 +36,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    needs: test
     steps:
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.13.15
@@ -43,6 +44,3 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "dh-learning-management-system"
           heroku_email: "d.hayesacademy23@gmail.com"
-
-
-
