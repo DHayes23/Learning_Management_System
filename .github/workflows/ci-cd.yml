@@ -26,7 +26,7 @@ jobs:
 
       - name: Run collectstatic
         env:
-          DJANGO_SETTINGS_MODULE: learning-management-system.settings
+          DJANGO_SETTINGS_MODULE: Learning_Management_System.settings
         run: |
           python manage.py collectstatic --noinput
 
