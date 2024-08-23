@@ -51,12 +51,9 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku auth:token
 
-      - name: Set up the Heroku remote
-        run: heroku git:remote -a dh-learning-management-system
+      - name: Deploy to Heroku using the API
+        run: |
+          heroku git:remote -a dh-learning-management-system
+          git push https://heroku:$HEROKU_API_KEY@git.heroku.com/dh-learning-management-system.git HEAD:main
 
-      - name: Verify the remote setup
-        run: git remote -v
-
-      - name: Deploy to Heroku
-        run: git push heroku main
 
