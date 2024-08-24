@@ -7,9 +7,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-2cmeg==18=(z%e$+@5!%uer-$%uug&*!$lklsgtq#9y82zb2f2')
 
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+DEBUG = False
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'dh-learning-management-system-844398670d9b.herokuapp.com').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '.gitpod.io').split(',')
+# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'dh-learning-management-system-844398670d9b.herokuapp.com').split(',')
 CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'https://*.gitpod.io').split(',')
 
 # Application definition
@@ -123,7 +124,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
