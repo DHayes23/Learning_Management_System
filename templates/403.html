@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forbidden</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="icon" type="image/svg+xml" href="{% static 'media/images/favicon.svg' %}">
+    <style>
+        .error-page {
+        color: var(--text-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+        font-family: "Comfortaa", monospace;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .error-container {
+        max-width: 600px;
+        padding: 3rem;
+        background-color: var(--background-color-dark);
+        border: var(--accent-color-1) solid 3px;
+        border-radius: 50px;
+        text-align: center;
+    }
+    
+    .error-container h1 {
+        font-family: "Chakra Petch", sans-serif;
+        font-size: 3.5rem;
+        color: var(--text-color);
+        margin-bottom: 2rem;
+    }
+    
+    .error-container p {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        color: var(--text-color);
+    }
+    
+    .error-container a {
+        color: var(--background-color-dark);
+        text-decoration: none;
+        font-size: 1.5rem;
+        font-family: "Comfortaa", monospace;
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        border-radius: 25px;
+        background-color: var(--accent-color-1);
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .error-container a:hover {
+        background-color: var(--accent-color-2);
+        color: var(--background-color-main);
+    }
+    </style>
+</head>
+<body class="error-page">
+    <div class="error-container">
+        <h1>403 - Forbidden</h1>
+        <p>Sorry, you do not have permission to access this page.</p>
+        <p><a href="/">Take me back!</a></p>
+    </div>
+</body>
+</html>
