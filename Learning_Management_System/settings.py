@@ -12,7 +12,6 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '.gitpod.io').split(',')
 
 CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'https://*.gitpod.io').split(',')
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -21,7 +20,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'allauth',
@@ -30,7 +28,6 @@ INSTALLED_APPS = [
     'profiles',
     'content',
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -84,6 +81,7 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 WSGI_APPLICATION = 'Learning_Management_System.wsgi.application'
 
+# Database configuration remains the same
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -128,6 +126,3 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-SECURE_SSL_REDIRECT = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
