@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import dj_database_url
+import sys
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -9,7 +10,6 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-2cmeg==18=(z%e$+@5!%uer-$%
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '.gitpod.io').split(',')
-
 CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'https://*.gitpod.io').split(',')
 
 # Application definition
@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'allauth',
@@ -126,3 +127,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Check if running tests
+IS_TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
+
+# Security Settings
+SECURE_SSL_REDIRECT = not IS_TESTING  # Disable during tests
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https') if not IS_TESTING else None
