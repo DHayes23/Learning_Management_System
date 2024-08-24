@@ -9,7 +9,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-2cmeg==18=(z%e$+@5!%uer-$%
 
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['dh-learning-management-system-844398670d9b.herokuapp.com', '.gitpod.io']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'dh-learning-management-system-844398670d9b.herokuapp.com').split(',')
 CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'https://*.gitpod.io').split(',')
 
 # Application definition
